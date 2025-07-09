@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ソース ファイル\オブジェクトクラス">
+      <UniqueIdentifier>{084be035-9f73-4d13-91c1-379bae451cf8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\フレームワーク">
+      <UniqueIdentifier>{53506c2f-9179-4b93-ae68-1ab6ada22e31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\shader">
+      <UniqueIdentifier>{8f3c70a4-c6ee-4ded-9a60-39687a50e54c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し">
+      <UniqueIdentifier>{11eee4b1-2018-4401-b038-e77fd544dc2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\フレームワーク\デバック用の文字描画">
+      <UniqueIdentifier>{9fe3b50a-2250-4702-9244-e4cd8bb5bf20}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DirectXTex.inl">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="polygon2D.cpp">
+      <Filter>ソース ファイル\オブジェクトクラス</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="keyboard.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="Manager.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="model.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="renderer.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="texture.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="polygon3D.cpp">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClCompile>
+    <ClCompile Include="pixelLightBlinnPhong.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="pixeLighting.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="vertexDirectionaLighting.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="DrawTextDebug.cpp">
+      <Filter>ソース ファイル\フレームワーク\デバック用の文字描画</Filter>
+    </ClCompile>
+    <ClCompile Include="hemisphereLighting.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="unlitColor.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="pointLightingBlinnPhong.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="spotLighting.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="limLighting.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="bumpMapField.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="bumpMap.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="CookTorrance.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="polygon2D.h">
+      <Filter>ソース ファイル\オブジェクトクラス</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="debugPrintf.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectXTex.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="keyboard.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="Manager.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="model.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="polygon3D.h">
+      <Filter>ソース ファイル\フレームワーク</Filter>
+    </ClInclude>
+    <ClInclude Include="pixelLightBlinnPhong.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="pixeLighting.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="vertexDirectionaLighting.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="DrawTextDebug.h">
+      <Filter>ソース ファイル\フレームワーク\デバック用の文字描画</Filter>
+    </ClInclude>
+    <ClInclude Include="hemisphereLighting.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="unlitColor.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="pointLightingBlinnPhong.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="spotLighting.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="limLighting.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="bumpMapField.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="bumpMap.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="CookTorrance.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="shader\unlitColorVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\common.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\unlitColorPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\unlitTexturePS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\unlitTextureVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vertexDirectionalLightingPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\vertexDirectionalLightingVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pixelLightingPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pixelLightingVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pixelLightingBlinnPhongPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pixelLightingBlinnPhongVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\hemisphereLightingPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\hemisphereLightingVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pointLightBlinnPhongPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\pointLightBlinnPhongVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\spotLightingPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\spotLightingVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\limLightingPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\limLightingVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\bumpVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\bumpPS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

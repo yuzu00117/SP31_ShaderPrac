@@ -1,0 +1,50 @@
+
+
+
+#include "main.h"
+#include "renderer.h"
+#include "model.h"
+
+//*****************************************************************************
+// マクロ定義
+//*****************************************************************************
+
+
+////////////////
+//構造体
+////////////////
+
+
+class SpotLightingModel
+{
+protected:
+	XMFLOAT3	Position;
+	XMFLOAT3	Scale;
+	XMFLOAT3	Rotate;
+	int			TexID;
+
+
+
+	MODEL* Model;
+
+public:
+
+	HRESULT InitPolygonModel(void);
+	void FinalizePolygonModel(void);
+	void UpdatePolygonModel(void);
+	void DrawPolygonModel(void);
+
+
+
+};
+
+
+
+
+
+
+
+//*****************************************************************************
+// プロトタイプ宣言
+//*****************************************************************************
+
