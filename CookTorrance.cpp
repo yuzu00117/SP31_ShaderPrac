@@ -6,7 +6,7 @@
 --------------------------------------------------------------------------------
 
 ==============================================================================*/
-#include"pointLightingBlinnPhong.h"
+#include"cookTorrance.h"
 #include "sprite.h"
 #include "Camera.h"
 #include "texture.h"
@@ -42,12 +42,12 @@ static ID3D11PixelShader* g_PixelShader = NULL;
 //=============================================================================
 // 初期化処理
 //=============================================================================
-HRESULT PointLightBlinnPhongModel::InitPolygonModel(void)
+HRESULT CookTorranceModel::InitPolygonModel()
 {
 
 	//シェーダー読み込み
-	CreateVertexShader(&g_VertexShader, &g_VertexLayout, "pointLightBlinnPhongVS.cso");
-	CreatePixelShader(&g_PixelShader, "pointLightBlinnPhongPS.cso");
+	CreateVertexShader(&g_VertexShader, &g_VertexLayout, "CookTorranceVS.cso");
+	CreatePixelShader(&g_PixelShader, "CookTorrancePS.cso");
 
 	//ライトパラメータを設定
 	Light.Diffuse = XMFLOAT4(0.8f, 0.8f, 0.8f, 1.0f);
@@ -61,9 +61,8 @@ HRESULT PointLightBlinnPhongModel::InitPolygonModel(void)
 
 
 
-
 	//3Dオブジェクト管理構造体の初期化
-	Position = XMFLOAT3(1.0f, 0.2f, 0.0f);
+	Position = XMFLOAT3(0.0f, 0.2f, 1.0f);
 	Rotate = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	Scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
@@ -80,7 +79,7 @@ HRESULT PointLightBlinnPhongModel::InitPolygonModel(void)
 //=============================================================================
 // 終了処理
 //=============================================================================
-void PointLightBlinnPhongModel::FinalizePolygonModel(void)
+void CookTorranceModel::FinalizePolygonModel()
 {
 	//作ったものを解放
 
@@ -93,7 +92,7 @@ void PointLightBlinnPhongModel::FinalizePolygonModel(void)
 //=============================================================================
 // 更新処理
 //=============================================================================
-void PointLightBlinnPhongModel::UpdatePolygonModel(void)
+void CookTorranceModel::UpdatePolygonModel(void)
 {
 	//適当に回転
 	Rotate.y += 0.3f;
@@ -109,12 +108,22 @@ void PointLightBlinnPhongModel::UpdatePolygonModel(void)
 		Light.Position.x -= 0.1f;
 	}
 
+	// 矢印キーでライトの位置を変更
+	if (GetAsyncKeyState(VK_UP) & 0x8000)
+	{
+		Light.Position.y += 0.1f;
+	}
+	if (GetAsyncKeyState(VK_DOWN) & 0x8000)
+	{
+		Light.Position.y -= 0.1f;
+	}
+
 }
 
 //=============================================================================
 // 描画処理
 //=============================================================================
-void PointLightBlinnPhongModel::DrawPolygonModel(void)
+void CookTorranceModel::DrawPolygonModel()
 {
 	SetLight(Light);
 

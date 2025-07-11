@@ -13,6 +13,18 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\bumpVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\CookTorrancePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\CookTorranceVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\disneyPBRPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\disneyPBRVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\hemisphereLightingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
@@ -61,10 +73,10 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\unlitTextureVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\vertexDirectionalLightingPS.cso</FullPath>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\vertexDirectionalLightingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
-      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\vertexDirectionalLightingVS.cso</FullPath>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\vertexDirectionalLightingVS.cso</FullPath>
     </ContentFile>
   </ContentFiles>
   <SatelliteDlls />
