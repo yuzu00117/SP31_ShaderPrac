@@ -15,7 +15,13 @@
 
 
 
-//ƒVƒF[ƒ_[Œn‚ÌŒÄ‚Ño‚µ
+#include"skyDome.h"
+SkyDome skyDome;
+        skyDome.InitPolygonModel();
+        skyDome.FinalizePolygonModel();
+                skyDome.UpdatePolygonModel();
+        skyDome.DrawPolygonModel();
+//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç³»ã®å‘¼ã³å‡ºã—
 #include"pixelLightBlinnPhong.h"
 #include"pixeLighting.h"
 #include"vertexDirectionaLighting.h"
@@ -30,14 +36,14 @@
 #include"bumpMapField.h"
 
 //===============================================
-//ƒOƒ[ƒoƒ‹•Ï”
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
  
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
 
 
-//ƒ‚ƒfƒ‹Œn‚ÌŒÄ‚Ño‚µ@ƒVƒF[ƒ_[•Ê
+//ãƒ¢ãƒ‡ãƒ«ç³»ã®å‘¼ã³å‡ºã—ã€€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆ¥
 PixelLightingModel pixelLightingModel;
 PixelLightBlinnPhongModel pixelLightBlinnPhongModel;
 VertexDirectionalLightingModel vertexDirectionalLightingModel;
@@ -52,24 +58,24 @@ DisneyPBRModel disneyPBRModel;
 BumpMapField bumpMapField;
 
 
-//ƒ|[ƒYƒtƒ‰ƒO
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°
 static	bool	pause = false;
 
 //===============================================
-//ƒ|[ƒYƒtƒ‰ƒOƒZƒbƒg
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ
 void	SetPause(bool flg)
 {
 	pause = flg;
 }
 //===============================================
-//ƒ|[ƒYƒtƒ‰ƒOŽæ“¾
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°å–å¾—
 bool	GetPause()
 {
 	return pause;
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“‰Šú‰»
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³åˆæœŸåŒ–
 void InitGame()
 {
 	TextureInitialize(GetDevice());
@@ -80,10 +86,10 @@ void InitGame()
 
 	
 
-	//3DƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	test3D.InitPolygon3D();
 	bumpMapField.InitBumpMapField();
-	//ƒ‚ƒfƒ‹Œn‚Ì‰Šú‰»
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®åˆæœŸåŒ–
 	pixelLightingModel.InitPolygonModel();
 	pixelLightBlinnPhongModel.InitPolygonModel();
 	vertexDirectionalLightingModel.InitPolygonModel();
@@ -102,17 +108,17 @@ void InitGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“I—¹
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³çµ‚äº†
 void FinalizeGame()
 {
 	CameraObject->Uninit();
 	test2D.FinalizePolygon2D();
 	
 
-	//ƒ‚ƒfƒ‹Œn‚ÌI—¹
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®çµ‚äº†
 	test3D.FinalizePolygon3D();
 	bumpMapField.FinalizeBumpMapField();
-	//ƒVƒF[ƒ_[‚ð—˜—p‚µ‚½ƒ‚ƒfƒ‹‚ÌI—¹
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®çµ‚äº†
 	pixelLightingModel.FinalizePolygonModel();
 	pixelLightBlinnPhongModel.FinalizePolygonModel();
 	vertexDirectionalLightingModel.FinalizePolygonModel();
@@ -128,20 +134,20 @@ void FinalizeGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“XV
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æ›´æ–°
 void UpdateGame()
 {
 
-	if (GetPause() == false)//ƒ|[ƒY’†‚Å‚È‚¯‚ê‚ÎXVŽÀs
+	if (GetPause() == false)//ãƒãƒ¼ã‚ºä¸­ã§ãªã‘ã‚Œã°æ›´æ–°å®Ÿè¡Œ
 	{
 		CameraObject->Update();
 		test2D.UpdatePolygon2D();
 		
 
-		//ƒ‚ƒfƒ‹Œn‚ÌXV
+		//ãƒ¢ãƒ‡ãƒ«ç³»ã®æ›´æ–°
 		test3D.UpdatePolygon3D();
 		bumpMapField.UpdateBumpMapField();
-		//ƒVƒF[ƒ_[‚ð—˜—p‚µ‚½ƒ‚ƒfƒ‹‚ÌXV
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®æ›´æ–°
 		pixelLightingModel.UpdatePolygonModel();
 		pixelLightBlinnPhongModel.UpdatePolygonModel();
 		vertexDirectionalLightingModel.UpdatePolygonModel();
@@ -159,22 +165,22 @@ void UpdateGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“•`‰æ
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æç”»
 void DrawGame()
 {
 
-	//3D—pƒ}ƒgƒŠƒNƒXÝ’è
-	SetDepthEnable(true);//‰œs‚«ˆ——LŒø
+	//3Dç”¨ãƒžãƒˆãƒªã‚¯ã‚¹è¨­å®š
+	SetDepthEnable(true);//å¥¥è¡Œãå‡¦ç†æœ‰åŠ¹
 	CameraObject->Draw();
 
 	ResetWorldViewProjection3D();
 	
 
-	//ƒ‚ƒfƒ‹Œn‚Ì•`‰æ
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®æç”»
 	//test3D.DrawPolygon3D();
 	bumpMapField.DrawBumpMapField();
 
-	//ƒVƒF[ƒ_[‚ð—˜—p‚µ‚½ƒ‚ƒfƒ‹‚Ì•`‰æ
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®æç”»
 	/*pixelLightingModel.DrawPolygonModel();
 	pixelLightBlinnPhongModel.DrawPolygonModel();
 	vertexDirectionalLightingModel.DrawPolygonModel();
@@ -186,9 +192,9 @@ void DrawGame()
 	//cookTorranceModel.DrawPolygonModel();
 	disneyPBRModel.DrawPolygonModel();
 
-	// 2D—pƒ}ƒgƒŠƒNƒXÝ’è
+	// 2Dç”¨ãƒžãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	SetWorldViewProjection2D();
-	SetDepthEnable(false);//‰œs‚«ˆ—–³Œø
+	SetDepthEnable(false);//å¥¥è¡Œãå‡¦ç†ç„¡åŠ¹
 	test2D.DrawPolygon2D();
 	CameraObject->DebugDraw();
 
