@@ -77,8 +77,8 @@ HRESULT BumpMapField::InitBumpMapField(void)
 {
 
 	//テクスチャ読み込み
-	int Texture = TextureLoad(L"asset\\texture\\sura.jpg");
-	BumpTexID = TextureLoad(L"asset\\texture\\test.png");
+	int Texture = TextureLoad(L"asset\\texture\\Brick.jpg");
+	BumpTexID = TextureLoad(L"asset\\texture\\Brick_Normal.png");
 
 	// シェーダーの読み込み
 	CreateVertexShader(&VertexShader, &VertexLayout, "bumpVS.cso");
