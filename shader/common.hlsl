@@ -11,14 +11,28 @@ cbuffer ProjectionBuffer : register(b2)
 {
     matrix Projection;
 }
+cbuffer DisneyMaterial : register(b3)
+{
+    float3 baseColor;
+    float subsurface;
+    float metallic;
+    float specular;
+    float specularTint;
+    float roughness;
+    float anisotropic;
+    float sheen;
+    float sheenTint;
+    float clearcoat;
+    float clearcoatGloss;
+    float Padding[3];
+};
 
 struct VS_IN
 {
     float4 Position : POSITION0;
     float4 Normal : NORMAL0;
     float4 Diffuse : COLOR0;
-    float2 TexCoord : TEXCOORD0;
-    
+    float2 TexCoord : TEXCOORD0;  
 };
 
 struct PS_IN

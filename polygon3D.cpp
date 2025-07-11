@@ -77,12 +77,12 @@ HRESULT Object3D::InitPolygon3D(void)
 {
 
 	//テクスチャ読み込み
-	int Texture = TextureLoad(L"asset\\texture\\sura.jpg");
+	int Texture = TextureLoad(L"asset\\texture\\Glay.jpg");
 
 
 	//シェーダー読み込み
-	CreateVertexShader(&VertexShader, &VertexLayout, "spotLightingVS.cso");
-	CreatePixelShader(&PixelShader, "spotLightingPS.cso");
+	CreateVertexShader(&VertexShader, &VertexLayout, "cookTorranceVS.cso");
+	CreatePixelShader(&PixelShader, "cookTorrancePS.cso");
 
 	//CreateVertexShader(&VertexShader, &VertexLayout, "UnlitTextureVS.cso");
 	//CreatePixelShader(&PixelShader, "UnlitTexturePS.cso");

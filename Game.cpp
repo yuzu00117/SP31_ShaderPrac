@@ -24,6 +24,8 @@
 #include"pointLightingBlinnPhong.h"
 #include"spotLighting.h"
 #include"limLighting.h"
+#include"cookTorrance.h"
+#include"disneyPBR.h"
 
 #include"bumpMapField.h"
 
@@ -44,6 +46,8 @@ UnlitColorModel unlitColorModel;
 PointLightBlinnPhongModel pointLightBlinnPhongModel;
 SpotLightingModel spotLightingModel;
 LimLightingModel limLightingModel;
+CookTorranceModel cookTorranceModel;
+DisneyPBRModel disneyPBRModel;
 
 BumpMapField bumpMapField;
 
@@ -88,6 +92,8 @@ void InitGame()
 	pointLightBlinnPhongModel.InitPolygonModel();
 	spotLightingModel.InitPolygonModel();
 	limLightingModel.InitPolygonModel();
+	cookTorranceModel.InitPolygonModel();
+	disneyPBRModel.InitPolygonModel();
 	
 
 	
@@ -115,6 +121,8 @@ void FinalizeGame()
 	pointLightBlinnPhongModel.FinalizePolygonModel();
 	spotLightingModel.FinalizePolygonModel();
 	limLightingModel.FinalizePolygonModel();
+	cookTorranceModel.FinalizePolygonModel();
+	disneyPBRModel.FinalizePolygonModel();
 
 	TextureFinalize();
 }
@@ -142,6 +150,8 @@ void UpdateGame()
 		pointLightBlinnPhongModel.UpdatePolygonModel();
 		spotLightingModel.UpdatePolygonModel();
 		limLightingModel.UpdatePolygonModel();
+		cookTorranceModel.UpdatePolygonModel();
+		disneyPBRModel.UpdatePolygonModel();
 
 				
 	}
@@ -170,9 +180,11 @@ void DrawGame()
 	vertexDirectionalLightingModel.DrawPolygonModel();
 	hemisphereLighting.DrawPolygonModel();
 	unlitColorModel.DrawPolygonModel();*/
-	pointLightBlinnPhongModel.DrawPolygonModel();
+	/*pointLightBlinnPhongModel.DrawPolygonModel();
 	spotLightingModel.DrawPolygonModel();
-	limLightingModel.DrawPolygonModel();
+	limLightingModel.DrawPolygonModel();*/
+	//cookTorranceModel.DrawPolygonModel();
+	disneyPBRModel.DrawPolygonModel();
 
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();

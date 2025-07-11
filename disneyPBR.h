@@ -23,7 +23,7 @@
 ////////////////
 
 
-class CookTorranceModel
+class DisneyPBRModel
 {
 protected:
 	XMFLOAT3	Position;

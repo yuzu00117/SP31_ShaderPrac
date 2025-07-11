@@ -1,48 +1,48 @@
 #include "common.hlsl"
-Texture2D g_Texture : register(t0); // ƒeƒNƒXƒ`ƒƒ‚O”Ô
-SamplerState g_SamplerState : register(s0); // ƒTƒ“ƒvƒ‰[‚O”Ô
+Texture2D g_Texture : register(t0); // ãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼ç•ª
+SamplerState g_SamplerState : register(s0); // ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ï¼ç•ª
 
 void main(in PS_IN In, out float4 outDiffuse : SV_Target)
 {
-    // ŒõŒ¹‚©‚çƒsƒNƒZƒ‹‚Ö‚ÌƒxƒNƒgƒ‹
+    // å…‰æºã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
     float4 lv = In.WorldPosition - Light.Position;
 
-    // •¨‘Ì‚ÆŒõŒ¹‚Ì‹——£
+    // ç‰©ä½“ã¨å…‰æºã®è·é›¢
     float4 ld = length(lv);
 
-    // ƒxƒNƒgƒ‹‚Ì³‹K‰»
+    // ãƒ™ã‚¯ãƒˆãƒ«ã®æ­£è¦åŒ–
     lv = normalize(lv);
 
-    // Œ¸Š‚ÌŒvZ
-    float ofs = 1.0f - (1.0f / Light.PointLightParam.x) * ld; // Œ¸Š‚ÌŒvZ
-    // Œ¸Š‚ğ–¢–‚É‚µ‚È‚¢
+    // æ¸›è¡°ã®è¨ˆç®—
+    float ofs = 1.0f - (1.0f / Light.PointLightParam.x) * ld; // æ¸›è¡°ã®è¨ˆç®—
+    // æ¸›è¡°ã‚’æœªæº€ã«ã—ãªã„
     ofs = max(0, ofs);
 
-    // ƒsƒNƒZƒ‹‚Ì–@ü‚ğ³‹K‰»
+    // ãƒ”ã‚¯ã‚»ãƒ«ã®æ³•ç·šã‚’æ­£è¦åŒ–
     float4 normal = normalize(In.Normal);
 
-    // Œõ—ÊŒvZ
+    // å…‰é‡è¨ˆç®—
     float light = dot(normal.xyz, lv.xyz);
     light = saturate(light);
-    light *= ofs; // –¾‚é‚³‚ğŒ¸Š‚³‚¹‚é
+    light *= ofs; // æ˜ã‚‹ã•ã‚’æ¸›è¡°ã•ã›ã‚‹
 
-    // ƒeƒNƒXƒ`ƒƒ‚ÌƒsƒNƒZƒ‹F‚ğæ“¾
+    // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ”ã‚¯ã‚»ãƒ«è‰²ã‚’å–å¾—
     outDiffuse = g_Texture.Sample(g_SamplerState, In.TexCoord);
-    outDiffuse.rgb *= In.Diffuse.rgb * light + Light.Ambient.rgb; // –¾‚é‚³‚ğæZ
-    outDiffuse.a *= In.Diffuse.a; // ƒ¿’l‚É–¾‚é‚³‚ÍŠÖŒW‚È‚¢
+    outDiffuse.rgb *= In.Diffuse.rgb * light + Light.Ambient.rgb; // æ˜ã‚‹ã•ã‚’ä¹—ç®—
+    outDiffuse.a *= In.Diffuse.a; // Î±å€¤ã«æ˜ã‚‹ã•ã¯é–¢ä¿‚ãªã„
 
-    // ƒJƒƒ‰‚©‚çƒsƒNƒZƒ‹‚ÖŒü‚©‚¤ƒxƒNƒgƒ‹
+    // ã‚«ãƒ¡ãƒ©ã‹ã‚‰ãƒ”ã‚¯ã‚»ãƒ«ã¸å‘ã‹ã†ãƒ™ã‚¯ãƒˆãƒ«
     float3 eyev = In.WorldPosition.xyz - CameraPosition.xyz;
     eyev = normalize(eyev);
 
-    // ƒn[ƒtƒxƒNƒgƒ‹‚ğŒvZ
-    float3 halfv = eyev + lv.xyz; // ‹üƒxƒNƒgƒ‹{ƒ‰ƒCƒgƒxƒNƒgƒ‹
+    // ãƒãƒ¼ãƒ•ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+    float3 halfv = eyev + lv.xyz; // è¦–ç·šãƒ™ã‚¯ãƒˆãƒ«ï¼‹ãƒ©ã‚¤ãƒˆãƒ™ã‚¯ãƒˆãƒ«
     halfv = normalize(halfv);
 
-    // ƒXƒyƒLƒ…ƒ‰[‚ÌŒvZ
-    float specular = dot(halfv, normal.xyz); // ƒn[ƒtƒxƒNƒgƒ‹‚Æ–@ü‚Ì“àÏ
+    // ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã®è¨ˆç®—
+    float specular = dot(halfv, normal.xyz); // ãƒãƒ¼ãƒ•ãƒ™ã‚¯ãƒˆãƒ«ã¨æ³•ç·šã®å†…ç©
     specular = saturate(specular);
     specular = pow(specular, 30);
 
-    outDiffuse.rgb += (specular * ofs); // ƒXƒyƒLƒ…ƒ‰‚àŒ¸Š‚³‚¹‚Ä‚©‚ç‰ÁZ‚µ‚Äo—Í
+    outDiffuse.rgb += (specular * ofs); // ã‚¹ãƒšã‚­ãƒ¥ãƒ©ã‚‚æ¸›è¡°ã•ã›ã¦ã‹ã‚‰åŠ ç®—ã—ã¦å‡ºåŠ›
 }
