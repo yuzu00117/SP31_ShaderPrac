@@ -20,17 +20,17 @@ MODEL* ModelLoad( const char *FileName )
 	model->AiScene = aiImportFile(FileName, aiProcessPreset_TargetRealtime_MaxQuality | aiProcess_ConvertToLeftHanded);
 	assert(model->AiScene);
 
-	model->VertexBuffer = new ID3D11Buffer*[model->AiScene->mNumMeshes];//’¸“_ƒf[ƒ^ƒ|ƒCƒ“ƒ^[
-	model->IndexBuffer = new ID3D11Buffer*[model->AiScene->mNumMeshes];//ƒCƒ“ƒfƒbƒNƒXƒf[ƒ^ƒ|ƒCƒ“ƒ^[
+	model->VertexBuffer = new ID3D11Buffer*[model->AiScene->mNumMeshes];//é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿ãƒã‚¤ãƒ³ã‚¿ãƒ¼
+	model->IndexBuffer = new ID3D11Buffer*[model->AiScene->mNumMeshes];//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒ‡ãƒ¼ã‚¿ãƒã‚¤ãƒ³ã‚¿ãƒ¼
 
 
 	for (unsigned int m = 0; m < model->AiScene->mNumMeshes; m++)
 	{
 		aiMesh* mesh = model->AiScene->mMeshes[m];
 
-		// ’¸“_ƒoƒbƒtƒ@¶¬
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		{
-			VERTEX_3D* vertex = new VERTEX_3D[mesh->mNumVertices];//’¸“_”•ª‚Ì”z—ñ—Ìˆæì¬
+			VERTEX_3D* vertex = new VERTEX_3D[mesh->mNumVertices];//é ‚ç‚¹æ•°åˆ†ã®é…åˆ—é ˜åŸŸä½œæˆ
 
 			for (unsigned int v = 0; v < mesh->mNumVertices; v++)
 			{
@@ -57,9 +57,9 @@ MODEL* ModelLoad( const char *FileName )
 		}
 
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@¶¬
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 		{
-			unsigned int* index = new unsigned int[mesh->mNumFaces * 3];//ƒ|ƒŠƒSƒ“””*3
+			unsigned int* index = new unsigned int[mesh->mNumFaces * 3];//ãƒãƒªã‚´ãƒ³æ•°æ•°*3
 
 			for (unsigned int f = 0; f < mesh->mNumFaces; f++)
 			{
@@ -90,7 +90,7 @@ MODEL* ModelLoad( const char *FileName )
 
 	}
 
-	//ƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿
 	for(UINT i = 0; i < model->AiScene->mNumTextures; i++)
 	{
 		aiTexture* aitexture = model->AiScene->mTextures[i];
@@ -140,15 +140,22 @@ void ModelRelease(MODEL* model)
 
 void ModelDraw(MODEL* model)
 {
-	// ƒvƒŠƒ~ƒeƒBƒuƒgƒ|ƒƒWİ’è
-	GetDeviceContext()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+		if (texture != aiString(""))
+                {
+                        auto it = model->Texture.find(texture.data);
+                        if (it != model->Texture.end() && it->second != nullptr)
+                        {
+                                ID3D11ShaderResourceView* meshTex = it->second;
+                                GetDeviceContext()->PSSetShaderResources(0, 1, &meshTex);
+                        }
+                }
 
 
 	for (unsigned int m = 0; m < model->AiScene->mNumMeshes; m++)
 	{
 		aiMesh* mesh = model->AiScene->mMeshes[m];
 
-		// ƒeƒNƒXƒ`ƒƒİ’è
+		// ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨­å®š
 		aiString texture;
 		aiMaterial* aimaterial = model->AiScene->mMaterials[mesh->mMaterialIndex];
 		aimaterial->GetTexture(aiTextureType_DIFFUSE, 0, &texture);
@@ -156,15 +163,15 @@ void ModelDraw(MODEL* model)
 		if (texture != aiString(""))
 			GetDeviceContext()->PSSetShaderResources(0, 1, &model->Texture[texture.data]);
 
-		// ’¸“_ƒoƒbƒtƒ@İ’è
+		// é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 		UINT stride = sizeof(VERTEX_3D);
 		UINT offset = 0;
 		GetDeviceContext()->IASetVertexBuffers(0, 1, &model->VertexBuffer[m], &stride, &offset);
 
-		// ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@İ’è
+		// ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡è¨­å®š
 		GetDeviceContext()->IASetIndexBuffer(model->IndexBuffer[m], DXGI_FORMAT_R32_UINT, 0);
 
-		// ƒ|ƒŠƒSƒ“•`‰æ
+		// ãƒãƒªã‚´ãƒ³æç”»
 		GetDeviceContext()->DrawIndexed(mesh->mNumFaces * 3, 0, 0);
 	}
 }
