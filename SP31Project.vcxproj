@@ -136,7 +136,6 @@
   <ItemGroup>
     <ClCompile Include="bumpMap.cpp" />
     <ClCompile Include="bumpMapField.cpp" />
-    <ClCompile Include="skyDome.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cookTorrance.cpp" />
     <ClCompile Include="disneyPBR.cpp" />
@@ -179,7 +178,6 @@
     <ClInclude Include="pointLightingBlinnPhong.h" />
     <ClInclude Include="polygon2D.h" />
     <ClInclude Include="bumpMapField.h" />
-    <ClInclude Include="skyDome.h" />
     <ClInclude Include="polygon3D.h" />
     <ClInclude Include="pixeLighting.h" />
     <ClInclude Include="renderer.h" />
