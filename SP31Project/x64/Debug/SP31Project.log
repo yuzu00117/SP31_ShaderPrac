@@ -1,43 +1,44 @@
-﻿C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\bumpPS.hlsl(19,11-60): warning X3206: implicit truncation of vector type
+﻿  bumpMapField.cpp
+  skyDome.cpp
+  Camera.cpp
+  cookTorrance.cpp
+  disneyPBR.cpp
+  DrawTextDebug.cpp
+  Game.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\Game.cpp(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  hemisphereLighting.cpp
+  keyboard.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\debugPrintf.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'keyboard.cpp' をコンパイルしています)
   
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\bumpPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\bumpVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\CookTorrancePS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\CookTorranceVS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\disneyPBRPS.hlsl(24,12-34): warning X3206: implicit truncation of vector type
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\disneyPBRPS.hlsl(43,16-53): warning X3206: implicit truncation of vector type
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\disneyPBRPS.hlsl(57,16): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\disneyPBRPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\disneyPBRVS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\hemisphereLightingPS.hlsl(32,12-68): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\hemisphereLightingPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\hemisphereLightingVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\limLightingPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\limLightingVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixelLightingBlinnPhongPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixelLightingBlinnPhongVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixelLightingPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixelLightingVS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\pointLightBlinnPhongPS.hlsl(17,11-60): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pointLightBlinnPhongPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pointLightBlinnPhongVS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\spotLightingPS.hlsl(16,11-60): warning X3206: implicit truncation of vector type
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\spotLightingPS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\spotLightingVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\unlitColorPS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\unlitColorVS.hlsl(3,34-36): warning X3578: Output value 'Out' is not completely initialized
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\unlitColorVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\unlitTexturePS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\unlitTextureVS.hlsl(3,34-36): warning X3578: Output value 'Out' is not completely initialized
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\unlitTextureVS.cso
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\vertexDirectionalLightingPS.cso
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\shader\vertexDirectionalLightingVS.hlsl(3,33-35): warning X3578: Output value 'Out' is not completely initialized
-  
-  compilation object save succeeded; see C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\vertexDirectionalLightingVS.cso
+  limLighting.cpp
+  main.cpp
+  Manager.cpp
+  model.cpp
+  pixelLightBlinnPhong.cpp
+  pointLightingBlinnPhong.cpp
+  polygon2D.cpp
+  polygon3D.cpp
+  pixeLighting.cpp
+  renderer.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\renderer.cpp(418,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\renderer.cpp(453,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  spotLighting.cpp
+  コードを生成中...
+  コンパイル中...
+  sprite.cpp
+  texture.cpp
+  unlitColor.cpp
+  vertexDirectionaLighting.cpp
+  コードを生成中...
+DirectXTex_Debug.lib(DirectXTexImage.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexImage.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexWIC.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexWIC.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexD3D11.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexD3D11.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexUtil.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexUtil.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexConvert.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexConvert.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexCompress.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexCompress.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexMipMaps.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexMipMaps.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC4BC5.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC4BC5.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC6HBC7.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC6HBC7.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   SP31Project.vcxproj -> C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\SP31Project.exe
