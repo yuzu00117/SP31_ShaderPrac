@@ -98,6 +98,9 @@
     <ClCompile Include="bumpMapField.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
+    <ClCompile Include="skyDome.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
     <ClCompile Include="bumpMap.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
@@ -176,6 +179,9 @@
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
     <ClInclude Include="bumpMapField.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="skyDome.h">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
     <ClInclude Include="bumpMap.h">
