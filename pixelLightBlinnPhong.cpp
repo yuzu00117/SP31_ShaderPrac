@@ -54,14 +54,10 @@ HRESULT PixelLightBlinnPhongModel::InitPolygonModel(void)
 	Light.Ambient = XMFLOAT4(0.5f, 0.3f, 0.3f, 1.0f);
 	Light.Direction = XMFLOAT4(0.0f, -1.0f, 1.0f, 0.0f);
 
-
-
-
-
 	//3Dオブジェクト管理構造体の初期化
-	Position = XMFLOAT3(2.0f, 0.2f, 0.0f);
+	Position = XMFLOAT3(0.0f, 0.2f, 1.0f);
 	Rotate = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	Scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
 
 	//モデル読み込み

@@ -55,6 +55,12 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pointLightBlinnPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDomePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDomeVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\spotLightingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

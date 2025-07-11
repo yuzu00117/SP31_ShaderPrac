@@ -165,6 +165,23 @@ void BumpMapField::DrawBumpMapField(void)
 {
 	SetLight(Light);
 
+	// 両面描画のためにカリング無効にする
+	ID3D11RasterizerState* rasterizerState;
+	D3D11_RASTERIZER_DESC rasterizerDesc = {};
+	rasterizerDesc.FillMode = D3D11_FILL_SOLID;
+	rasterizerDesc.CullMode = D3D11_CULL_NONE; // カリング無効で両面表示
+	rasterizerDesc.FrontCounterClockwise = FALSE;
+	rasterizerDesc.DepthBias = 0;
+	rasterizerDesc.DepthBiasClamp = 0.0f;
+	rasterizerDesc.SlopeScaledDepthBias = 0.0f;
+	rasterizerDesc.DepthClipEnable = TRUE;
+	rasterizerDesc.ScissorEnable = FALSE;
+	rasterizerDesc.MultisampleEnable = FALSE;
+	rasterizerDesc.AntialiasedLineEnable = FALSE;
+
+	GetDevice()->CreateRasterizerState(&rasterizerDesc, &rasterizerState);
+	GetDeviceContext()->RSSetState(rasterizerState);
+
 	// 頂点レイアウト設定
 	GetDeviceContext()->IASetInputLayout(VertexLayout);
 	//頂点シェーダーをセット
@@ -234,4 +251,7 @@ void BumpMapField::DrawBumpMapField(void)
 		//描画
 		GetDeviceContext()->Draw(BOX_NUM_VERTEX, 0);//インデックス無し描画
 	}
+
+	// ラスタライザーステートを元に戻す
+	if (rasterizerState) rasterizerState->Release();
 }

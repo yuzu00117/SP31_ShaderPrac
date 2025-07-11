@@ -59,9 +59,9 @@ HRESULT UnlitColorModel::InitPolygonModel(void)
 
 
 	//3Dオブジェクト管理構造体の初期化
-	Position = XMFLOAT3(-4.0f, 0.2f, 0.0f);
+	Position = XMFLOAT3(0.0f, 0.2f, 1.0f);
 	Rotate = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	Scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
 
 	//モデル読み込み
@@ -92,7 +92,7 @@ void UnlitColorModel::FinalizePolygonModel(void)
 void UnlitColorModel::UpdatePolygonModel(void)
 {
 	//適当に回転
-	Rotate.y += 1.3f;
+	Rotate.y += 0.3f;
 	Rotate.x += 0.1f;
 
 }

@@ -155,11 +155,30 @@ void DrawTextDebug(const char* text)
         wtext,
         (UINT32)wcslen(wtext),
         g_textFormat.Get(),
-        D2D1::RectF(10, 10, 600, 200),
+        D2D1::RectF(10, 10, 600, 300),  // ‚‚³‚ð200‚©‚ç300‚ÉŠg’£
         g_d2dBrush.Get()
     );
     g_d2dContext->EndDraw();
 }
+
+// ˆÊ’uŽw’è‰Â”\‚ÈDrawTextDebugŠÖ”‚ð’Ç‰Á
+void DrawTextDebugAtPosition(const char* text, float x, float y, float width, float height)
+{
+    if (!g_d2dContext) return;
+    wchar_t wtext[512];
+    MultiByteToWideChar(CP_ACP, 0, text, -1, wtext, 512);
+
+    g_d2dContext->BeginDraw();
+    g_d2dContext->DrawText(
+        wtext,
+        (UINT32)wcslen(wtext),
+        g_textFormat.Get(),
+        D2D1::RectF(x, y, x + width, y + height),
+        g_d2dBrush.Get()
+    );
+    g_d2dContext->EndDraw();
+}
+
 void ReleaseTextRender()
 {
     if (g_d2dBrush) g_d2dBrush.Reset();

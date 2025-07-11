@@ -2,3 +2,5 @@
 *.cso
 /SP31Project
 /x64
+*.obj
+/SP31Project

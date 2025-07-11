@@ -134,7 +134,6 @@
     <None Include="DirectXTex.inl" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="bumpMap.cpp" />
     <ClCompile Include="bumpMapField.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cookTorrance.cpp" />
@@ -153,6 +152,7 @@
     <ClCompile Include="polygon3D.cpp" />
     <ClCompile Include="pixeLighting.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="skyDome.cpp" />
     <ClCompile Include="spotLighting.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="texture.cpp" />
@@ -160,7 +160,6 @@
     <ClCompile Include="vertexDirectionaLighting.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="bumpMap.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="cookTorrance.h" />
     <ClInclude Include="debugPrintf.h" />
@@ -181,6 +180,7 @@
     <ClInclude Include="polygon3D.h" />
     <ClInclude Include="pixeLighting.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="skyDome.h" />
     <ClInclude Include="spotLighting.h" />
     <ClInclude Include="sprite.h" />
     <ClInclude Include="texture.h" />
@@ -357,6 +357,16 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="shader\skyDomePS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
+    </FxCompile>
+    <FxCompile Include="shader\skyDomeVS.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
+      <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
     </FxCompile>
     <FxCompile Include="shader\spotLightingPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>

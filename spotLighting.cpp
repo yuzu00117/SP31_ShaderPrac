@@ -55,7 +55,7 @@ HRESULT SpotLightingModel::InitPolygonModel(void)
 
 	Light.Direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f); //ライトの向き
 	Light.Position = XMFLOAT4(0.0f, 3.0f, 0.0f, 0.0f);   //ライトの座標
-	Light.PointLightParam = XMFLOAT4(200.0f, 1.5f, 0.0f, 0.0f); //x = 光の届く距離 y = 補正値
+	Light.PointLightParam = XMFLOAT4(200.0f, 1.5f, 0.0f, 0.0f); //x = 減衰範囲距離 y = 減衰値
 	Light.Angle = XMFLOAT4((3.14159f / 180.0f) * 30.0f, 0.0f, 0.0f, 0.0f); //コーン角度
 
 
@@ -63,20 +63,16 @@ HRESULT SpotLightingModel::InitPolygonModel(void)
 	temp = XMVector4Normalize(temp);
 	XMStoreFloat4(&Light.GroundNormal, temp);
 
-
-
-
 	
 
 
 
 	//3Dオブジェクト管理構造体の初期化
-	Position = XMFLOAT3(-2 * 0.5f, 0.2f, 0.0f);
+	Position = XMFLOAT3(0.0f, 0.2f, 1.0f);
 	Rotate = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	Scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 	//モデル読み込み
 	Model = ModelLoad("asset\\model\\model.fbx");
-
 
 
 

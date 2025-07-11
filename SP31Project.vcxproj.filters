@@ -98,13 +98,13 @@
     <ClCompile Include="bumpMapField.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
-    <ClCompile Include="bumpMap.cpp">
-      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
-    </ClCompile>
     <ClCompile Include="cookTorrance.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
     <ClCompile Include="disneyPBR.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
+    <ClCompile Include="skyDome.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
   </ItemGroup>
@@ -178,13 +178,13 @@
     <ClInclude Include="bumpMapField.h">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
-    <ClInclude Include="bumpMap.h">
-      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
-    </ClInclude>
     <ClInclude Include="cookTorrance.h">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
     <ClInclude Include="disneyPBR.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="skyDome.h">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
   </ItemGroup>
@@ -262,6 +262,12 @@
       <Filter>ソース ファイル\shader</Filter>
     </FxCompile>
     <FxCompile Include="shader\disneyPBRVS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\skyDomePS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\skyDomeVS.hlsl">
       <Filter>ソース ファイル\shader</Filter>
     </FxCompile>
   </ItemGroup>

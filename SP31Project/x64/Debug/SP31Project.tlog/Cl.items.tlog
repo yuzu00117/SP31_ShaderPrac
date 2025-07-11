@@ -1,4 +1,3 @@
-C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\bumpMap.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\bumpMap.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\bumpMapField.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\bumpMapField.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\Camera.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\Camera.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\cookTorrance.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\cookTorrance.obj
@@ -17,6 +16,7 @@ C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\polygon2D.cpp;C:\Users\yuzu0\Des
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\polygon3D.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\polygon3D.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixeLighting.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\pixeLighting.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\renderer.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\renderer.obj
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDome.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\skyDome.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\spotLighting.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\spotLighting.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\sprite.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\sprite.obj
 C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\texture.cpp;C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\SP31Project\x64\Debug\texture.obj

@@ -50,9 +50,9 @@ HRESULT HemisphereLighting::InitPolygonModel(void)
 	CreatePixelShader(&g_PixelShader, "hemisphereLightingPS.cso");
 
 	Light.Direction = XMFLOAT4(0.0f, -1.0f, 0.0f, 0.0f);
-	Light.SkyColor = XMFLOAT4(0.6f, 0.0f, 0.0f, 1.0f); // 空の色は黒（無色）
-	Light.GroundColor = XMFLOAT4(0.0f, 0.6f, 0.0f, 1.0f); // 地面色は赤 緑
-	Light.GroundNormal = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f); // 地面真上向き
+	Light.SkyColor = XMFLOAT4(0.6f, 0.0f, 0.0f, 1.0f); // 空の色は純粋な色
+	Light.GroundColor = XMFLOAT4(0.0f, 0.6f, 0.0f, 1.0f); // 地面色は青緑
+	Light.GroundNormal = XMFLOAT4(0.0f, 1.0f, 0.0f, 0.0f); // 地面法線
 
 	XMVECTOR temp = XMLoadFloat4(&Light.GroundNormal); // 法線は正規化しておく
 	temp = XMVector4Normalize(temp);
@@ -62,9 +62,9 @@ HRESULT HemisphereLighting::InitPolygonModel(void)
 
 
 	//3Dオブジェクト管理構造体の初期化
-	Position = XMFLOAT3(4.0f, 0.2f, 0.0f);
+	Position = XMFLOAT3(0.0f, 0.2f, 1.0f);
 	Rotate = XMFLOAT3(0.0f, 0.0f, 0.0f);
-	Scale = XMFLOAT3(0.5f, 0.5f, 0.5f);
+	Scale = XMFLOAT3(0.2f, 0.2f, 0.2f);
 
 
 	//モデル読み込み

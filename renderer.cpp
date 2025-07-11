@@ -390,8 +390,8 @@ void FinalizeRenderer(void)
 //=============================================================================
 void Clear(void)
 {
-	// バックバッファクリア色
-	float ClearColor[4] = { 0.4f, 0.2f, 0.2f, 1.0f };//純黒は避ける
+	// バックバッファクリア色（スカイドーム表示のため、ダークブルーに変更）
+	float ClearColor[4] = { 0.1f, 0.1f, 0.2f, 1.0f }; // ダークブルー
 	//バックバッファをクリア
 	g_ImmediateContext->ClearRenderTargetView( g_RenderTargetView, ClearColor );
 	//デプスステンシルバッファをクリア

@@ -54,7 +54,7 @@ HRESULT CookTorranceModel::InitPolygonModel()
 	Light.Ambient = XMFLOAT4(0.5f, 0.3f, 0.3f, 1.0f);
 	Light.Direction = XMFLOAT4(0.0f, -1.0f, 1.0f, 0.0f);
 
-	Light.Position = XMFLOAT4(0.0f, 0.5f, -0.5f, 1.0f);//モデルの少し手前少し上
+	Light.Position = XMFLOAT4(0.0f, 0.5f, 0.0f, 1.0f);//モデルの少し手前少し上
 	Light.PointLightParam = XMFLOAT4(10.0f, 0.0f, 0.0f, 0.0f);//x=距離
 	Light.Ambient = XMFLOAT4(0.1f, 0.1f, 0.1f, 1.0f);//アンビエントもいれる
 
