@@ -15,12 +15,7 @@
 
 
 
-#include"skyDome.h"
-SkyDome skyDome;
-        skyDome.InitPolygonModel();
-        skyDome.FinalizePolygonModel();
-                skyDome.UpdatePolygonModel();
-        skyDome.DrawPolygonModel();
+#include "skyDome.h"
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
 #include"pixeLighting.h"
@@ -56,6 +51,7 @@ CookTorranceModel cookTorranceModel;
 DisneyPBRModel disneyPBRModel;
 
 BumpMapField bumpMapField;
+SkyDome skyDome;
 
 
 //ポーズフラグ
@@ -88,7 +84,8 @@ void InitGame()
 
 	//3Dオブジェクト初期化
 	test3D.InitPolygon3D();
-	bumpMapField.InitBumpMapField();
+        bumpMapField.InitBumpMapField();
+        skyDome.InitPolygonModel();
 	//モデル系の初期化
 	pixelLightingModel.InitPolygonModel();
 	pixelLightBlinnPhongModel.InitPolygonModel();
@@ -117,7 +114,8 @@ void FinalizeGame()
 
 	//モデル系の終了
 	test3D.FinalizePolygon3D();
-	bumpMapField.FinalizeBumpMapField();
+        bumpMapField.FinalizeBumpMapField();
+        skyDome.FinalizePolygonModel();
 	//シェーダーを利用したモデルの終了
 	pixelLightingModel.FinalizePolygonModel();
 	pixelLightBlinnPhongModel.FinalizePolygonModel();
@@ -146,7 +144,8 @@ void UpdateGame()
 
 		//モデル系の更新
 		test3D.UpdatePolygon3D();
-		bumpMapField.UpdateBumpMapField();
+                bumpMapField.UpdateBumpMapField();
+                skyDome.UpdatePolygonModel();
 		//シェーダーを利用したモデルの更新
 		pixelLightingModel.UpdatePolygonModel();
 		pixelLightBlinnPhongModel.UpdatePolygonModel();
@@ -178,7 +177,8 @@ void DrawGame()
 
 	//モデル系の描画
 	//test3D.DrawPolygon3D();
-	bumpMapField.DrawBumpMapField();
+        bumpMapField.DrawBumpMapField();
+        skyDome.DrawPolygonModel();
 
 	//シェーダーを利用したモデルの描画
 	/*pixelLightingModel.DrawPolygonModel();
