@@ -1,2 +1,46 @@
-﻿  limLighting.cpp
+﻿  Camera.cpp
+  DrawTextDebug.cpp
+  Game.cpp
+  Manager.cpp
+  bumpMapField.cpp
+  cookTorrance.cpp
+  disneyPBR.cpp
+  hemisphereLighting.cpp
+  keyboard.cpp
+  limLighting.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\debugPrintf.h(1,1): warning C4819: ファイルは、現在のコード ページ (932) で表示できない文字を含んでいます。データの損失を防ぐために、ファイルを Unicode 形式で保存してください。
+  (ソース ファイル 'keyboard.cpp' をコンパイルしています)
+  
+  main.cpp
+  model.cpp
+  pixeLighting.cpp
+  pixelLightBlinnPhong.cpp
+  pointLightingBlinnPhong.cpp
+  polygon2D.cpp
+  polygon3D.cpp
+  renderer.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\renderer.cpp(418,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\renderer.cpp(453,9): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  skyDome.cpp
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDome.cpp(208,32): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDome.cpp(209,30): warning C4267: '=': 'size_t' から 'int' に変換しました。データが失われているかもしれません。
+  spotLighting.cpp
+  コードを生成中...
+  コンパイル中...
+  sprite.cpp
+  texture.cpp
+  unlitColor.cpp
+  vertexDirectionaLighting.cpp
+  コードを生成中...
+  LINK : 前回のインクリメンタル リンクで C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\SP31Project.exe が見つからなかったか、ビルドされませんでした。フル リンクを行います。
+DirectXTex_Debug.lib(DirectXTexImage.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexImage.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexWIC.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexWIC.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexD3D11.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexD3D11.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexUtil.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexUtil.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexConvert.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexConvert.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexCompress.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexCompress.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(DirectXTexMipMaps.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(DirectXTexMipMaps.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC4BC5.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC4BC5.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
+DirectXTex_Debug.lib(BC6HBC7.obj) : warning LNK4099: PDB 'DirectXTex.pdb' が 'DirectXTex_Debug.lib(BC6HBC7.obj)' で、または 'C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\DirectXTex.pdb' に見つかりません。デバッグ情報がないものとして、オブジェクトにリンクします。
   SP31Project.vcxproj -> C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\SP31Project.exe
