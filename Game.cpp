@@ -23,6 +23,7 @@
 #include"limLighting.h"
 #include"cookTorrance.h"
 #include"disneyPBR.h"
+#include"toon1.h"
 
 #include"bumpMapField.h"
 #include"skyDome.h"  // スカイドーム追加
@@ -45,6 +46,7 @@ SpotLightingModel spotLightingModel;
 LimLightingModel limLightingModel;
 CookTorranceModel cookTorranceModel;
 DisneyPBRModel disneyPBRModel;
+Toon1Model toon1Model;  // Toonシェーダー追加
 
 BumpMapField bumpMapField;
 SkyDome skyDome;  // スカイドーム追加
@@ -69,6 +71,7 @@ static const char* shaderNames[] = {
     "Rim Lighting",
     "Cook-Torrance",
     "Disney PBR"
+	"Toon"
 };
 
 //===============================================
@@ -109,6 +112,7 @@ void InitGame()
 	limLightingModel.InitPolygonModel();
 	cookTorranceModel.InitPolygonModel();
 	disneyPBRModel.InitPolygonModel();
+	toon1Model.InitPolygonModel();
 }
 
 //===============================================
@@ -133,6 +137,7 @@ void FinalizeGame()
 	limLightingModel.FinalizePolygonModel();
 	cookTorranceModel.FinalizePolygonModel();
 	disneyPBRModel.FinalizePolygonModel();
+	toon1Model.FinalizePolygonModel();
 
 	TextureFinalize();
 }
@@ -170,6 +175,7 @@ void UpdateGame()
 		limLightingModel.UpdatePolygonModel();
 		cookTorranceModel.UpdatePolygonModel();
 		disneyPBRModel.UpdatePolygonModel();
+		toon1Model.UpdatePolygonModel();
 	}
 }
 
@@ -191,39 +197,46 @@ void DrawGame()
 	bumpMapField.DrawBumpMapField();
 
 	//シェーダーを利用したモデルの描画（現在選択されたもののみ）
-	switch (currentShaderIndex)
-	{
-	case 0:
-		pixelLightingModel.DrawPolygonModel();
-		break;
-	case 1:
-		pixelLightBlinnPhongModel.DrawPolygonModel();
-		break;
-	case 2:
-		vertexDirectionalLightingModel.DrawPolygonModel();
-		break;
-	case 3:
-		hemisphereLighting.DrawPolygonModel();
-		break;
-	case 4:
-		unlitColorModel.DrawPolygonModel();
-		break;
-	case 5:
-		pointLightBlinnPhongModel.DrawPolygonModel();
-		break;
-	case 6:
-		spotLightingModel.DrawPolygonModel();
-		break;
-	case 7:
-		limLightingModel.DrawPolygonModel();
-		break;
-	case 8:
-		cookTorranceModel.DrawPolygonModel();
-		break;
-	case 9:
-		disneyPBRModel.DrawPolygonModel();
-		break;
-	}
+	//switch (currentShaderIndex)
+	//{
+	//case 0:
+	//	pixelLightingModel.DrawPolygonModel();
+	//	break;
+	//case 1:
+	//	pixelLightBlinnPhongModel.DrawPolygonModel();
+	//	break;
+	//case 2:
+	//	vertexDirectionalLightingModel.DrawPolygonModel();
+	//	break;
+	//case 3:
+	//	hemisphereLighting.DrawPolygonModel();
+	//	break;
+	//case 4:
+	//	unlitColorModel.DrawPolygonModel();
+	//	break;
+	//case 5:
+	//	pointLightBlinnPhongModel.DrawPolygonModel();
+	//	break;
+	//case 6:
+	//	spotLightingModel.DrawPolygonModel();
+	//	break;
+	//case 7:
+	//	limLightingModel.DrawPolygonModel();
+	//	break;
+	//case 8:
+	//	cookTorranceModel.DrawPolygonModel();
+	//	break;
+	//case 9:
+	//	disneyPBRModel.DrawPolygonModel();
+	//	break;
+	//case 10:
+	//	toon1Model.DrawPolygonModel();
+	//	break;
+	//}
+
+	// デバッグ用
+	// Toon1モデルの描画
+	toon1Model.DrawPolygonModel();
 
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
