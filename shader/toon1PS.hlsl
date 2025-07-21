@@ -4,45 +4,70 @@ SamplerState g_SamplerState : register(s0); // サンプラー０番
 
 void main(in PS_IN In, out float4 outDiffuse : SV_Target)
 {
-    // 光源からピクセルへのベクトル
-    float4 lv = In.WorldPosition - Light.Position;
-
-    // 物体と光源の距離
-    float4 ld = length(lv);
-
-    // ベクトルの正規化
-    lv = normalize(lv);
-
-    // 減衰の計算
-    float ofs = 1.0f - (1.0f / Light.PointLightParam.x) * ld; // 減衰の計算
-    // 減衰を未満にしない
-    ofs = max(0, ofs);
-
     // ピクセルの法線を正規化
     float4 normal = normalize(In.Normal);
-
-    // 光量計算
-    float light = dot(normal.xyz, lv.xyz);
-    light = saturate(light);
-    light *= ofs; // 明るさを減衰させる
-
+    
+    // 光源からピクセルへのベクトル
+    float4 lv = In.WorldPosition - Light.Position;
+    float4 ld = length(lv); // 物体と光源の距離
+    lv = normalize(lv); // ベクトルの正規化
+    
+    // 減衰の計算
+    float ofs = 1.0f - (1.0f / Light.PointLightParam.x) * ld;
+    ofs = max(0, ofs);
+    
+    // 光量計算（ランバート拡散照明）
+    float dotNL = dot(normal.xyz, -lv.xyz);
+    dotNL = saturate(dotNL);
+    
+    // Toon Shader の段階的な陰影
+    // 3段階の明度に分割
+    float toonFactor;
+    if (dotNL > 0.8)
+        toonFactor = 1.0; // 最も明るい部分
+    else if (dotNL > 0.4)
+        toonFactor = 0.6; // 中間の明るさ
+    else if (dotNL > 0.1)
+        toonFactor = 0.3; // 暗い部分
+    else
+        toonFactor = 0.1; // 最も暗い部分（完全に黒ではない）
+    
+    // 減衰も適用
+    toonFactor *= ofs;
+    
     // テクスチャのピクセル色を取得
     outDiffuse = g_Texture.Sample(g_SamplerState, In.TexCoord);
-    outDiffuse.rgb *= In.Diffuse.rgb * light + Light.Ambient.rgb; // 明るさを乗算
-    outDiffuse.a *= In.Diffuse.a; // α値に明るさは関係ない
-
-    // カメラからピクセルへ向かうベクトル
-    float3 eyev = In.WorldPosition.xyz - CameraPosition.xyz;
-    eyev = normalize(eyev);
-
-    // ハーフベクトルを計算
-    float3 halfv = eyev + lv.xyz; // 視線ベクトル＋ライトベクトル
-    halfv = normalize(halfv);
-
-    // スペキュラーの計算
-    float specular = dot(halfv, normal.xyz); // ハーフベクトルと法線の内積
+    
+    // Toonシェーディングを適用
+    outDiffuse.rgb *= In.Diffuse.rgb * toonFactor + Light.Ambient.rgb;
+    outDiffuse.a *= In.Diffuse.a;
+    
+    // リム照明効果（輪郭の明るさ）
+    float3 eyev = normalize(CameraPosition.xyz - In.WorldPosition.xyz);
+    float rim = 1.0 - saturate(dot(normal.xyz, eyev));
+    rim = pow(rim, 2.0);
+    
+    // リム照明の強度を調整
+    float rimIntensity = 0.3;
+    outDiffuse.rgb += rim * rimIntensity * Light.Diffuse.rgb;
+    
+    // スペキュラーハイライト（アニメ風の鋭いハイライト）
+    float3 halfv = normalize(eyev - lv.xyz);
+    float specular = dot(halfv, normal.xyz);
     specular = saturate(specular);
-    specular = pow(specular, 30);
-
-    outDiffuse.rgb += (specular * ofs); // スペキュラも減衰させてから加算して出力
+    
+    // Toon風のスペキュラー（段階的）
+    float toonSpecular;
+    if (specular > 0.95)
+        toonSpecular = 1.0;
+    else if (specular > 0.8)
+        toonSpecular = 0.5;
+    else
+        toonSpecular = 0.0;
+    
+    // スペキュラーを加算（アニメ風の鋭いハイライト）
+    outDiffuse.rgb += toonSpecular * ofs * 0.8;
+    
+    // 色の彩度を少し上げてアニメ風に
+    outDiffuse.rgb = saturate(outDiffuse.rgb * 1.1);
 }
