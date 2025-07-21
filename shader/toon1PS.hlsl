@@ -9,7 +9,7 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
     
     // 光源からピクセルへのベクトル
     float4 lv = In.WorldPosition - Light.Position;
-    float4 ld = length(lv); // 物体と光源の距離
+    float ld = length(lv); // 物体と光源の距離
     lv = normalize(lv); // ベクトルの正規化
     
     // 減衰の計算
@@ -70,4 +70,21 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
     
     // 色の彩度を少し上げてアニメ風に
     outDiffuse.rgb = saturate(outDiffuse.rgb * 1.1);
+    
+    // 輪郭線判定（エッジ検出）
+    // 視線ベクトルと法線の内積で輪郭を判定
+    float edgeDetection = dot(eyev, normal.xyz);
+    edgeDetection = abs(edgeDetection); // 絶対値を取る
+    
+    // 輪郭線の閾値（この値より小さい場合は輪郭線とみなす）
+    float edgeThreshold = 0.2;
+    
+    // 輪郭線の色（黒）
+    float3 edgeColor = float3(0.0, 0.0, 0.0);
+    
+    // 輪郭線判定：閾値より小さい場合は輪郭線色に置き換え
+    if (edgeDetection < edgeThreshold)
+    {
+        outDiffuse.rgb = edgeColor;
+    }
 }
