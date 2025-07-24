@@ -110,6 +110,9 @@
     <ClCompile Include="toon1.cpp">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClCompile>
+    <ClCompile Include="toon2.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="polygon2D.h">
@@ -192,6 +195,9 @@
     </ClInclude>
     <ClInclude Include="toon1.h">
       <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClInclude>
+    <ClInclude Include="toon2.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -282,5 +288,7 @@
     <FxCompile Include="shader\toon1VS.hlsl">
       <Filter>ソース ファイル\shader</Filter>
     </FxCompile>
+    <FxCompile Include="shader\toon2VS.hlsl" />
+    <FxCompile Include="shader\toon2PS.hlsl" />
   </ItemGroup>
 </Project>

@@ -24,6 +24,7 @@
 #include"cookTorrance.h"
 #include"disneyPBR.h"
 #include"toon1.h"
+#include"toon2.h"  // ランプテクスチャトゥーン追加
 
 #include"bumpMapField.h"
 #include"skyDome.h"  // スカイドーム追加
@@ -47,6 +48,7 @@ LimLightingModel limLightingModel;
 CookTorranceModel cookTorranceModel;
 DisneyPBRModel disneyPBRModel;
 Toon1Model toon1Model;  // Toonシェーダー追加
+Toon2Model toon2Model;  // ランプテクスチャToonシェーダー追加
 
 BumpMapField bumpMapField;
 SkyDome skyDome;  // スカイドーム追加
@@ -56,7 +58,7 @@ static	bool	pause = false;
 
 // シェーダー切り替え用変数
 static int currentShaderIndex = 0;
-static int maxShaderCount = 10;  // 利用可能なシェーダー数
+static int maxShaderCount = 12;  // 利用可能なシェーダー数（toon2追加で11個に）
 static bool spaceKeyPressed = false;  // スペースキーの前回状態
 
 // シェーダー名一覧
@@ -70,8 +72,9 @@ static const char* shaderNames[] = {
     "Spot Lighting",
     "Rim Lighting",
     "Cook-Torrance",
-    "Disney PBR"
-	"Toon"
+    "Disney PBR",
+    "Toon1",
+    "Toon2 (Ramp Texture)"
 };
 
 //===============================================
@@ -113,6 +116,7 @@ void InitGame()
 	cookTorranceModel.InitPolygonModel();
 	disneyPBRModel.InitPolygonModel();
 	toon1Model.InitPolygonModel();
+	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
 }
 
 //===============================================
@@ -138,6 +142,7 @@ void FinalizeGame()
 	cookTorranceModel.FinalizePolygonModel();
 	disneyPBRModel.FinalizePolygonModel();
 	toon1Model.FinalizePolygonModel();
+	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
 
 	TextureFinalize();
 }
@@ -176,6 +181,7 @@ void UpdateGame()
 		cookTorranceModel.UpdatePolygonModel();
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
+		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
 	}
 }
 
@@ -197,46 +203,45 @@ void DrawGame()
 	bumpMapField.DrawBumpMapField();
 
 	//シェーダーを利用したモデルの描画（現在選択されたもののみ）
-	//switch (currentShaderIndex)
-	//{
-	//case 0:
-	//	pixelLightingModel.DrawPolygonModel();
-	//	break;
-	//case 1:
-	//	pixelLightBlinnPhongModel.DrawPolygonModel();
-	//	break;
-	//case 2:
-	//	vertexDirectionalLightingModel.DrawPolygonModel();
-	//	break;
-	//case 3:
-	//	hemisphereLighting.DrawPolygonModel();
-	//	break;
-	//case 4:
-	//	unlitColorModel.DrawPolygonModel();
-	//	break;
-	//case 5:
-	//	pointLightBlinnPhongModel.DrawPolygonModel();
-	//	break;
-	//case 6:
-	//	spotLightingModel.DrawPolygonModel();
-	//	break;
-	//case 7:
-	//	limLightingModel.DrawPolygonModel();
-	//	break;
-	//case 8:
-	//	cookTorranceModel.DrawPolygonModel();
-	//	break;
-	//case 9:
-	//	disneyPBRModel.DrawPolygonModel();
-	//	break;
-	//case 10:
-	//	toon1Model.DrawPolygonModel();
-	//	break;
-	//}
-
-	// デバッグ用
-	// Toon1モデルの描画
-	toon1Model.DrawPolygonModel();
+	switch (currentShaderIndex)
+	{
+	case 0:
+		pixelLightingModel.DrawPolygonModel();
+		break;
+	case 1:
+		pixelLightBlinnPhongModel.DrawPolygonModel();
+		break;
+	case 2:
+		vertexDirectionalLightingModel.DrawPolygonModel();
+		break;
+	case 3:
+		hemisphereLighting.DrawPolygonModel();
+		break;
+	case 4:
+		unlitColorModel.DrawPolygonModel();
+		break;
+	case 5:
+		pointLightBlinnPhongModel.DrawPolygonModel();
+		break;
+	case 6:
+		spotLightingModel.DrawPolygonModel();
+		break;
+	case 7:
+		limLightingModel.DrawPolygonModel();
+		break;
+	case 8:
+		cookTorranceModel.DrawPolygonModel();
+		break;
+	case 9:
+		disneyPBRModel.DrawPolygonModel();
+		break;
+	case 10:
+		toon1Model.DrawPolygonModel();
+		break;
+	case 11:
+		toon2Model.DrawPolygonModel();  // ランプテクスチャトゥーン描画
+		break;
+	}
 
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
