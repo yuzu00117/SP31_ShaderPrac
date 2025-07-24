@@ -36,6 +36,9 @@ public:
 	void FinalizePolygonModel(void);
 	void UpdatePolygonModel(void);
 	void DrawPolygonModel(void);
+	
+	// ランプテクスチャIDを取得する関数（新規追加）
+	int GetRampTextureID(void) const { return RampTexID; }
 };
 
 //*****************************************************************************

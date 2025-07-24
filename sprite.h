@@ -23,5 +23,7 @@
 //*****************************************************************************
 HRESULT InitSprite(void);
 void FinalizeSprite(void);
-//スプライト表示　行列使用版
+//スプライト表示　単色用
 void DrawSprite(XMFLOAT2 size, XMFLOAT4 color);
+//スプライト表示　テクスチャ付き（新規追加）
+void DrawSpriteWithTexture(XMFLOAT2 position, XMFLOAT2 size, int textureID, XMFLOAT4 color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f));

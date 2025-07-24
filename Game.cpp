@@ -248,6 +248,21 @@ void DrawGame()
 	SetDepthEnable(false);//奥行き処理無効
 	test2D.DrawPolygon2D();
 	
+	// Toon2のランプテクスチャを2Dスプライトとして表示（新規追加）
+	if (currentShaderIndex == 11) // Toon2が選択されている場合
+	{
+		int rampTexID = toon2Model.GetRampTextureID();
+		if (rampTexID >= 0) // 有効なテクスチャIDの場合
+		{
+			// 画面左上にランプテクスチャを表示
+			XMFLOAT2 position = XMFLOAT2(150.0f, 50.0f); // 表示位置
+			XMFLOAT2 size = XMFLOAT2(256.0f, 32.0f);     // 表示サイズ（横長）
+			XMFLOAT4 color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); // 白色（そのまま表示）
+			
+			DrawSpriteWithTexture(position, size, rampTexID, color);
+		}
+	}
+	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
 
