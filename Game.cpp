@@ -11,6 +11,7 @@
 #include"model.h"
 #include"polygon3D.h"
 #include"DrawTextDebug.h"
+#include "Mosaic.h"
 
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
@@ -35,6 +36,7 @@
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
+static Mosaic g_Mosaic;
 
 //モデル系の呼び出し　シェーダー別
 PixelLightingModel pixelLightingModel;
@@ -117,6 +119,9 @@ void InitGame()
 	disneyPBRModel.InitPolygonModel();
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
+
+	// モザイク初期化
+	g_Mosaic.Initialize();
 }
 
 //===============================================
@@ -143,6 +148,9 @@ void FinalizeGame()
 	disneyPBRModel.FinalizePolygonModel();
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
+
+	// モザイク終了
+	g_Mosaic.Finalize();
 
 	TextureFinalize();
 }
@@ -182,6 +190,9 @@ void UpdateGame()
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
+
+		// モザイク更新（↑↓でサイズ変更）
+		g_Mosaic.Update();
 	}
 }
 
@@ -189,6 +200,9 @@ void UpdateGame()
 //ゲームシーン描画
 void DrawGame()
 {
+	// 1pass: オフスクリーンへ
+	g_Mosaic.BeginScene();
+
 	//3D用マトリクス設定
 	SetDepthEnable(true);//奥行き処理有効
 	CameraObject->Draw();
@@ -290,6 +304,9 @@ void DrawGame()
 			OutputDebugStringA("Game.cpp: Invalid rampTexID\n");
 		}
 	}
+
+	// 2pass: モザイクをバックバッファへ
+	g_Mosaic.EndSceneAndDraw();
 	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();

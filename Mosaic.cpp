@@ -1,5 +1,6 @@
 #include "Mosaic.h"
 #include "keyboard.h"
+#include <d3dcompiler.h>
 
 struct FSVertex
 {
@@ -108,10 +109,39 @@ HRESULT Mosaic::CreateFullScreenQuad()
 
 HRESULT Mosaic::CreateShaders()
 {
-    // Use precompiled CSO files placed in shader/ directory
-    CreateVertexShader(&m_VS, &m_InputLayout, "shader/mosaicVS.cso");
-    CreatePixelShader(&m_PS, "shader/mosaicPS.cso");
-    return S_OK;
+    // Compile HLSL at runtime and create shaders + input layout (POSITION, TEXCOORD)
+    ID3DBlob* vsBlob = nullptr;
+    ID3DBlob* psBlob = nullptr;
+    ID3DBlob* errBlob = nullptr;
+
+    HRESULT hr = D3DCompileFromFile(L"shader/mosaicVS.hlsl", nullptr, nullptr, "main", "vs_5_0", 0, 0, &vsBlob, &errBlob);
+    if (FAILED(hr))
+    {
+        if (errBlob) { OutputDebugStringA((const char*)errBlob->GetBufferPointer()); errBlob->Release(); }
+        return hr;
+    }
+
+    hr = GetDevice()->CreateVertexShader(vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), nullptr, &m_VS);
+    if (FAILED(hr)) { vsBlob->Release(); return hr; }
+
+    D3D11_INPUT_ELEMENT_DESC layout[] = {
+        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,    0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
+    };
+    hr = GetDevice()->CreateInputLayout(layout, ARRAYSIZE(layout), vsBlob->GetBufferPointer(), vsBlob->GetBufferSize(), &m_InputLayout);
+    vsBlob->Release();
+    if (FAILED(hr)) return hr;
+
+    hr = D3DCompileFromFile(L"shader/mosaicPS.hlsl", nullptr, nullptr, "main", "ps_5_0", 0, 0, &psBlob, &errBlob);
+    if (FAILED(hr))
+    {
+        if (errBlob) { OutputDebugStringA((const char*)errBlob->GetBufferPointer()); errBlob->Release(); }
+        return hr;
+    }
+
+    hr = GetDevice()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_PS);
+    psBlob->Release();
+    return hr;
 }
 
 void Mosaic::SetRectSize(int size)
@@ -150,7 +180,10 @@ void Mosaic::EndSceneAndDraw()
 {
     auto ctx = GetDeviceContext();
 
-    // Back buffer RTV is already set by renderer Clear/Init; ensure depth state disabled for FS quad
+    // Bind backbuffer RTV/DSV
+    BindBackBuffer();
+
+    // Back buffer resolve pass: depth off
     SetDepthEnable(false);
 
     // Set shaders and input layout for fullscreen pass
