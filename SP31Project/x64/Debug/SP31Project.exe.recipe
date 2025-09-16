@@ -67,6 +67,12 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pointLightBlinnPhongVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\posterizePS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\posterizeVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\skyDomePS.cso</FullPath>
     </ContentFile>
     <ContentFile>
