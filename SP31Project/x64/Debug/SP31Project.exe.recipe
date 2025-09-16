@@ -37,6 +37,12 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\limLightingVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\mosaicPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\mosaicVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\pixelLightingBlinnPhongPS.cso</FullPath>
     </ContentFile>
     <ContentFile>
