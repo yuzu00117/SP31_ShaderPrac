@@ -21,6 +21,9 @@ public:
     void SetRectSize(int size);
     int  GetRectSize() const { return m_RectSize; }
 
+    void SetEnabled(bool enabled) { m_Enabled = enabled; }
+    bool GetEnabled() const { return m_Enabled; }
+
 private:
     HRESULT CreateOffscreenTargets();
     HRESULT CreateFullScreenQuad();
@@ -40,4 +43,5 @@ private:
     ID3D11Buffer*           m_VertexBuffer = nullptr;
 
     int m_RectSize = 16; // default
+    bool m_Enabled = true;
 };

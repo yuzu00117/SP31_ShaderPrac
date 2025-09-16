@@ -260,7 +260,11 @@ void DrawGame()
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
 	SetDepthEnable(false);//奥行き処理無効
-	test2D.DrawPolygon2D();
+	// モザイクONのときだけ中央マーカー（center_white.png）を描画
+	if (g_Mosaic.GetEnabled())
+	{
+		test2D.DrawPolygon2D();
+	}
 	
 	// Toon2のランプテクスチャを2Dスプライトとして表示（最終版）
 	if (currentShaderIndex == 11) // Toon2が選択されている場合

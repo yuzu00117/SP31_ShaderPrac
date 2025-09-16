@@ -153,7 +153,13 @@ void Mosaic::SetRectSize(int size)
 
 void Mosaic::Update()
 {
-    // Handle UP/DOWN keys
+    // Toggle with V key (trigger)
+    if (Keyboard_IsKeyDownTrigger(KK_V))
+    {
+        m_Enabled = !m_Enabled;
+    }
+
+    // Handle UP/DOWN keys for size
     if (Keyboard_IsKeyDownTrigger(KK_UP))
     {
         SetRectSize(m_RectSize + 1);
@@ -182,6 +188,32 @@ void Mosaic::EndSceneAndDraw()
 
     // Bind backbuffer RTV/DSV
     BindBackBuffer();
+
+    if (!m_Enabled)
+    {
+        // When disabled, just blit the offscreen texture 1:1 without mosaic.
+        // Reuse the same full-screen pass but with RectSize = 1.
+        SetDepthEnable(false);
+        ctx->IASetInputLayout(m_InputLayout);
+        ctx->VSSetShader(m_VS, nullptr, 0);
+        ctx->PSSetShader(m_PS, nullptr, 0);
+
+        UINT stride = sizeof(FSVertex);
+        UINT offset = 0;
+        ctx->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
+        ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
+
+        ctx->PSSetShaderResources(0, 1, &m_OffscreenSRV);
+
+        XMFLOAT4 param((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 1.0f, 0.0f);
+        SetParameter(param);
+
+        ctx->Draw(4, 0);
+
+        ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
+        ctx->PSSetShaderResources(0, 1, nullSRV);
+        return;
+    }
 
     // Back buffer resolve pass: depth off
     SetDepthEnable(false);
