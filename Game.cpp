@@ -11,6 +11,7 @@
 #include"model.h"
 #include"polygon3D.h"
 #include"DrawTextDebug.h"
+#include "Mosaic.h"
 
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
@@ -35,6 +36,7 @@
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
+static Mosaic g_Mosaic;
 
 //モデル系の呼び出し　シェーダー別
 PixelLightingModel pixelLightingModel;
@@ -117,6 +119,9 @@ void InitGame()
 	disneyPBRModel.InitPolygonModel();
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
+
+	// モザイク初期化
+	g_Mosaic.Initialize();
 }
 
 //===============================================
@@ -143,6 +148,9 @@ void FinalizeGame()
 	disneyPBRModel.FinalizePolygonModel();
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
+
+	// モザイク終了
+	g_Mosaic.Finalize();
 
 	TextureFinalize();
 }
@@ -182,6 +190,9 @@ void UpdateGame()
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
+
+		// モザイク更新（↑↓でサイズ変更）
+		g_Mosaic.Update();
 	}
 }
 
@@ -189,6 +200,9 @@ void UpdateGame()
 //ゲームシーン描画
 void DrawGame()
 {
+	// 1pass: オフスクリーンへ
+	g_Mosaic.BeginScene();
+
 	//3D用マトリクス設定
 	SetDepthEnable(true);//奥行き処理有効
 	CameraObject->Draw();
@@ -246,7 +260,11 @@ void DrawGame()
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
 	SetDepthEnable(false);//奥行き処理無効
-	test2D.DrawPolygon2D();
+	// モザイクONのときだけ中央マーカー（center_white.png）を描画
+	if (g_Mosaic.GetEnabled())
+	{
+		test2D.DrawPolygon2D();
+	}
 	
 	// Toon2のランプテクスチャを2Dスプライトとして表示（最終版）
 	if (currentShaderIndex == 11) // Toon2が選択されている場合
@@ -290,12 +308,20 @@ void DrawGame()
 			OutputDebugStringA("Game.cpp: Invalid rampTexID\n");
 		}
 	}
+
+	// 2pass: モザイクをバックバッファへ
+	g_Mosaic.EndSceneAndDraw();
 	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
 
 	// 現在のシェーダー名を表示（下部）
 	char shaderInfo[256];
-	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch", shaderNames[currentShaderIndex]);
+	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
+
+	// 現在のポストエフェクト情報を表示（下部）
+	char mosaicInfo[256];
+	sprintf_s(mosaicInfo, "PostEffect: Mosaic %s (UP/DOWN to change size: %d)", g_Mosaic.GetEnabled() ? "ON" : "OFF", g_Mosaic.GetRectSize());
+	DrawTextDebugAtPosition(mosaicInfo, 10, 200, 600, 100);
 }

@@ -89,3 +89,6 @@ void SetLight(LIGHT Light);
 
 IDXGISwapChain* GetSwapChain(void);
 
+// 新規: バックバッファへRTV/DSVをバインド
+void BindBackBuffer();
+
