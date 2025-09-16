@@ -58,7 +58,7 @@ static	bool	pause = false;
 
 // シェーダー切り替え用変数
 static int currentShaderIndex = 0;
-static int maxShaderCount = 12;  // 利用可能なシェーダー数（toon2追加で11個に）
+static int maxShaderCount = 12;  // 利用可能なシェーダー数（toon2追加で12個に）
 static bool spaceKeyPressed = false;  // スペースキーの前回状態
 
 // シェーダー名一覧
@@ -248,18 +248,46 @@ void DrawGame()
 	SetDepthEnable(false);//奥行き処理無効
 	test2D.DrawPolygon2D();
 	
-	// Toon2のランプテクスチャを2Dスプライトとして表示（新規追加）
+	// Toon2のランプテクスチャを2Dスプライトとして表示（最終版）
 	if (currentShaderIndex == 11) // Toon2が選択されている場合
 	{
 		int rampTexID = toon2Model.GetRampTextureID();
+		
+		// デバッグ出力
+		char debugMsg[256];
+		sprintf_s(debugMsg, "Game.cpp: currentShaderIndex=%d, rampTexID=%d\n", currentShaderIndex, rampTexID);
+		OutputDebugStringA(debugMsg);
+		
 		if (rampTexID >= 0) // 有効なテクスチャIDの場合
 		{
-			// 画面左上にランプテクスチャを表示
-			XMFLOAT2 position = XMFLOAT2(150.0f, 50.0f); // 表示位置
-			XMFLOAT2 size = XMFLOAT2(256.0f, 32.0f);     // 表示サイズ（横長）
-			XMFLOAT4 color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f); // 白色（そのまま表示）
-			
-			DrawSpriteWithTexture(position, size, rampTexID, color);
+			// test2Dの直後なので、既に2D用のシェーダー設定が済んでいる
+			// テクスチャだけを変更してスプライトを描画
+			ID3D11ShaderResourceView* tex = GetTexture(rampTexID);
+			if (tex != NULL) {
+				GetDeviceContext()->PSSetShaderResources(0, 1, &tex);
+				
+				// ワールド行列を左上位置に設定
+				XMMATRIX TranslationMatrix = XMMatrixTranslation(SCREEN_WIDTH - 64, 64.0f, 0.0f);
+				XMMATRIX RotationMatrix = XMMatrixRotationZ(0.0f);
+				XMMATRIX ScalingMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
+				XMMATRIX WorldMatrix = ScalingMatrix * RotationMatrix * TranslationMatrix;
+				SetWorldMatrix(WorldMatrix);
+				
+				// スプライト描画
+				XMFLOAT2 spriteSize = XMFLOAT2(128.0f, 128.0f);
+				XMFLOAT4 spriteColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+				DrawSprite(spriteSize, spriteColor);
+				
+				OutputDebugStringA("Game.cpp: Sprite drawn successfully\n");
+			}
+			else
+			{
+				OutputDebugStringA("Game.cpp: Failed to get texture\n");
+			}
+		}
+		else
+		{
+			OutputDebugStringA("Game.cpp: Invalid rampTexID\n");
 		}
 	}
 	
@@ -271,5 +299,3 @@ void DrawGame()
 	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch", shaderNames[currentShaderIndex]);
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 }
-
-

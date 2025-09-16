@@ -34,7 +34,7 @@ void main(in PS_IN In, out float4 outDiffuse : SV_Target)
     
     // ランプテクスチャからトゥーン照明を取得
     // lightを X 座標として使用、Y は 0.5 固定（1×N テクスチャ対応）
-    float2 rampUV = float2(light, 0.5f);
+    float2 rampUV = float2(light, 0.0f);
     float4 rampColor = g_TextureToon.Sample(g_SamplerState, rampUV);
     
     // 最終色の計算

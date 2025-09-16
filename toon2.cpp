@@ -66,18 +66,12 @@ HRESULT Toon2Model::InitPolygonModel(void)
 
 	// ランプテクスチャを読み込み（横256×縦1ピクセル等のグラデーション画像）
 	// ファイルが見つからない場合は既存のテクスチャを使用
-	RampTexID = TextureLoad(L"asset\\texture\\toon1.bmp");
-	if (RampTexID == -1) // テクスチャが見つからない場合
-	{
-		// デフォルトテクスチャを使用（Greyテクスチャなど）
-		RampTexID = TextureLoad(L"asset\\texture\\toon1.png");
-		if (RampTexID == -1)
-		{
-			// それでも見つからない場合は白テクスチャを生成するか
-			// モデルのテクスチャIDと同じものを使用
-			RampTexID = 0; // デフォルトの白テクスチャ
-		}
-	}
+	RampTexID = TextureLoad(L"asset\\texture\\toon1.png");
+
+	// デバッグ出力でテクスチャIDを確認
+	char debugMsg[256];
+	sprintf_s(debugMsg, "Toon2Model: RampTexID = %d\n", RampTexID);
+	OutputDebugStringA(debugMsg);
 
 	return S_OK;
 }
