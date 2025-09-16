@@ -40,6 +40,10 @@ Object3D    test3D;
 static Mosaic g_Mosaic; // 既存（参考用に残す）
 static Horror g_Horror; // 新規ホラーエフェクト
 
+// ポストエフェクト切り替え
+enum class PostEffectMode { Horror = 0, Mosaic = 1, None = 2 };
+static PostEffectMode g_PostMode = PostEffectMode::Horror;
+
 //モデル系の呼び出し　シェーダー別
 PixelLightingModel pixelLightingModel;
 PixelLightBlinnPhongModel pixelLightBlinnPhongModel;
@@ -178,6 +182,14 @@ void UpdateGame()
 		}
 		spaceKeyPressed = currentSpaceKeyState;
 
+		// Vキーでポストエフェクト切り替え（Horror -> Mosaic -> None -> Horror ...）
+		if (Keyboard_IsKeyDownTrigger(KK_V))
+		{
+			if (g_PostMode == PostEffectMode::Horror) g_PostMode = PostEffectMode::Mosaic;
+			else if (g_PostMode == PostEffectMode::Mosaic) g_PostMode = PostEffectMode::None;
+			else g_PostMode = PostEffectMode::Horror;
+		}
+
 		CameraObject->Update();
 		test2D.UpdatePolygon2D();
 		
@@ -209,8 +221,20 @@ void UpdateGame()
 //ゲームシーン描画
 void DrawGame()
 {
-	// 1pass: オフスクリーンへ（ホラー効果）
-	g_Horror.BeginScene();
+	// 1pass: オフスクリーンへ（選択されたポストエフェクト）
+	switch (g_PostMode)
+	{
+	case PostEffectMode::Horror:
+		g_Horror.BeginScene();
+		break;
+	case PostEffectMode::Mosaic:
+		g_Mosaic.BeginScene();
+		break;
+	case PostEffectMode::None:
+		// 何もしない（バックバッファに直接描画）
+		BindBackBuffer();
+		break;
+	}
 
 	//3D用マトリクス設定
 	SetDepthEnable(true);//奥行き処理有効
@@ -269,8 +293,8 @@ void DrawGame()
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
 	SetDepthEnable(false);//奥行き処理無効
-	// モザイクONのときだけ中央マーカー（center_white.png）を描画
-	if (g_Mosaic.GetEnabled())
+	// モザイク選択中のみ中央マーカー（center_white.png）を描画（デモ用）
+	if (g_PostMode == PostEffectMode::Mosaic)
 	{
 		test2D.DrawPolygon2D();
 	}
@@ -318,8 +342,19 @@ void DrawGame()
 		}
 	}
 
-	// 2pass: ホラーでバックバッファへ
-	g_Horror.EndSceneAndDraw();
+	// 2pass: 選択したポストエフェクト → バックバッファへ
+	switch (g_PostMode)
+	{
+	case PostEffectMode::Horror:
+		g_Horror.EndSceneAndDraw();
+		break;
+	case PostEffectMode::Mosaic:
+		g_Mosaic.EndSceneAndDraw();
+		break;
+	case PostEffectMode::None:
+		// 何もしない
+		break;
+	}
 	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
@@ -330,8 +365,8 @@ void DrawGame()
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
 	// 現在のポストエフェクト情報を表示（下部）
+	const char* peName = (g_PostMode == PostEffectMode::Horror) ? "Horror" : (g_PostMode == PostEffectMode::Mosaic ? "Mosaic" : "None");
 	char postInfo[256];
-	sprintf_s(postInfo, "PostEffect: Horror Noise (Gray=%s, Scale=%.1f, Power=%.1f)",
-			 ("ON"), 120.0f, 5.0f);
+	sprintf_s(postInfo, "PostEffect (V to switch): %s", peName);
 	DrawTextDebugAtPosition(postInfo, 10, 200, 800, 100);
 }

@@ -153,13 +153,7 @@ void Mosaic::SetRectSize(int size)
 
 void Mosaic::Update()
 {
-    // Toggle with V key (trigger)
-    if (Keyboard_IsKeyDownTrigger(KK_V))
-    {
-        m_Enabled = !m_Enabled;
-    }
-
-    // Handle UP/DOWN keys for size
+    // Handle UP/DOWN keys for mosaic block size
     if (Keyboard_IsKeyDownTrigger(KK_UP))
     {
         SetRectSize(m_RectSize + 1);
