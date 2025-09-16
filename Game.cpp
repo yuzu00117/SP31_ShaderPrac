@@ -12,6 +12,7 @@
 #include"polygon3D.h"
 #include"DrawTextDebug.h"
 #include "Mosaic.h"
+#include "horror.h"
 
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
@@ -36,7 +37,12 @@
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
-static Mosaic g_Mosaic;
+static Mosaic g_Mosaic; // 既存（参考用に残す）
+static Horror g_Horror; // 新規ホラーエフェクト
+
+// ポストエフェクト切り替え
+enum class PostEffectMode { Horror = 0, Mosaic = 1, None = 2 };
+static PostEffectMode g_PostMode = PostEffectMode::Horror;
 
 //モデル系の呼び出し　シェーダー別
 PixelLightingModel pixelLightingModel;
@@ -120,8 +126,13 @@ void InitGame()
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
 
-	// モザイク初期化
-	g_Mosaic.Initialize();
+	// ポストエフェクト初期化
+	g_Mosaic.Initialize(); // 既存（参考）
+	g_Horror.Init();       // 新規ホラー
+	g_Horror.SetGrayScaleEnabled(true);
+	g_Horror.SetContrastPower(5.0f);
+	g_Horror.SetNoiseScale(120.0f);
+	g_Horror.SetNoiseAddPerFrame(XMFLOAT2(0.01f, 0.013f));
 }
 
 //===============================================
@@ -149,8 +160,9 @@ void FinalizeGame()
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
 
-	// モザイク終了
+	// ポストエフェクト終了
 	g_Mosaic.Finalize();
+	g_Horror.Finalize();
 
 	TextureFinalize();
 }
@@ -169,6 +181,14 @@ void UpdateGame()
 			currentShaderIndex = (currentShaderIndex + 1) % maxShaderCount;
 		}
 		spaceKeyPressed = currentSpaceKeyState;
+
+		// Vキーでポストエフェクト切り替え（Horror -> Mosaic -> None -> Horror ...）
+		if (Keyboard_IsKeyDownTrigger(KK_V))
+		{
+			if (g_PostMode == PostEffectMode::Horror) g_PostMode = PostEffectMode::Mosaic;
+			else if (g_PostMode == PostEffectMode::Mosaic) g_PostMode = PostEffectMode::None;
+			else g_PostMode = PostEffectMode::Horror;
+		}
 
 		CameraObject->Update();
 		test2D.UpdatePolygon2D();
@@ -191,8 +211,9 @@ void UpdateGame()
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
 
-		// モザイク更新（↑↓でサイズ変更）
+		// ポストエフェクト更新
 		g_Mosaic.Update();
+		g_Horror.Update();
 	}
 }
 
@@ -200,8 +221,20 @@ void UpdateGame()
 //ゲームシーン描画
 void DrawGame()
 {
-	// 1pass: オフスクリーンへ
-	g_Mosaic.BeginScene();
+	// 1pass: オフスクリーンへ（選択されたポストエフェクト）
+	switch (g_PostMode)
+	{
+	case PostEffectMode::Horror:
+		g_Horror.BeginScene();
+		break;
+	case PostEffectMode::Mosaic:
+		g_Mosaic.BeginScene();
+		break;
+	case PostEffectMode::None:
+		// 何もしない（バックバッファに直接描画）
+		BindBackBuffer();
+		break;
+	}
 
 	//3D用マトリクス設定
 	SetDepthEnable(true);//奥行き処理有効
@@ -260,8 +293,8 @@ void DrawGame()
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
 	SetDepthEnable(false);//奥行き処理無効
-	// モザイクONのときだけ中央マーカー（center_white.png）を描画
-	if (g_Mosaic.GetEnabled())
+	// モザイク選択中のみ中央マーカー（center_white.png）を描画（デモ用）
+	if (g_PostMode == PostEffectMode::Mosaic)
 	{
 		test2D.DrawPolygon2D();
 	}
@@ -309,8 +342,19 @@ void DrawGame()
 		}
 	}
 
-	// 2pass: モザイクをバックバッファへ
-	g_Mosaic.EndSceneAndDraw();
+	// 2pass: 選択したポストエフェクト → バックバッファへ
+	switch (g_PostMode)
+	{
+	case PostEffectMode::Horror:
+		g_Horror.EndSceneAndDraw();
+		break;
+	case PostEffectMode::Mosaic:
+		g_Mosaic.EndSceneAndDraw();
+		break;
+	case PostEffectMode::None:
+		// 何もしない
+		break;
+	}
 	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
@@ -321,7 +365,8 @@ void DrawGame()
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
 	// 現在のポストエフェクト情報を表示（下部）
-	char mosaicInfo[256];
-	sprintf_s(mosaicInfo, "PostEffect: Mosaic %s (UP/DOWN to change size: %d)", g_Mosaic.GetEnabled() ? "ON" : "OFF", g_Mosaic.GetRectSize());
-	DrawTextDebugAtPosition(mosaicInfo, 10, 200, 600, 100);
+	const char* peName = (g_PostMode == PostEffectMode::Horror) ? "Horror" : (g_PostMode == PostEffectMode::Mosaic ? "Mosaic" : "None");
+	char postInfo[256];
+	sprintf_s(postInfo, "PostEffect (V to switch): %s", peName);
+	DrawTextDebugAtPosition(postInfo, 10, 200, 800, 100);
 }

@@ -1,5 +1,4 @@
-#include "Mosaic.h"
-#include "keyboard.h"
+#include "horror.h"
 #include <d3dcompiler.h>
 
 struct FSVertex
@@ -8,10 +7,21 @@ struct FSVertex
     XMFLOAT2 uv;
 };
 
-Mosaic::Mosaic() {}
-Mosaic::~Mosaic() { Finalize(); }
+// CPU mirror of HorrorParams cbuffer
+struct HorrorCB
+{
+    XMFLOAT2 NoiseSeed;
+    float    NoiseScale;
+    float    GrayScaleEnabled;
+    float    ContrastPower;
+    XMFLOAT2 NoiseAddPerFrame;
+    float    pad[1]; // padding to 16-byte alignment
+};
 
-HRESULT Mosaic::Initialize()
+Horror::Horror() {}
+Horror::~Horror() { Finalize(); }
+
+HRESULT Horror::Init()
 {
     HRESULT hr = S_OK;
     hr = CreateOffscreenTargets();
@@ -20,13 +30,13 @@ HRESULT Mosaic::Initialize()
     hr = CreateFullScreenQuad();
     if (FAILED(hr)) return hr;
 
-    hr = CreateShaders();
+    hr = CreateShadersAndStates();
     if (FAILED(hr)) return hr;
 
     return S_OK;
 }
 
-void Mosaic::Finalize()
+void Horror::Finalize()
 {
     if (m_VertexBuffer) { m_VertexBuffer->Release(); m_VertexBuffer = nullptr; }
     if (m_InputLayout) { m_InputLayout->Release(); m_InputLayout = nullptr; }
@@ -41,7 +51,7 @@ void Mosaic::Finalize()
     if (m_OffscreenTex) { m_OffscreenTex->Release(); m_OffscreenTex = nullptr; }
 }
 
-HRESULT Mosaic::CreateOffscreenTargets()
+HRESULT Horror::CreateOffscreenTargets()
 {
     auto device = GetDevice();
 
@@ -87,7 +97,7 @@ HRESULT Mosaic::CreateOffscreenTargets()
     return S_OK;
 }
 
-HRESULT Mosaic::CreateFullScreenQuad()
+HRESULT Horror::CreateFullScreenQuad()
 {
     FSVertex v[4] = {
         { XMFLOAT3(-1, -1, 0), XMFLOAT2(0, 1) },
@@ -107,14 +117,13 @@ HRESULT Mosaic::CreateFullScreenQuad()
     return GetDevice()->CreateBuffer(&bd, &init, &m_VertexBuffer);
 }
 
-HRESULT Mosaic::CreateShaders()
+HRESULT Horror::CreateShadersAndStates()
 {
-    // Compile HLSL at runtime and create shaders + input layout (POSITION, TEXCOORD)
     ID3DBlob* vsBlob = nullptr;
     ID3DBlob* psBlob = nullptr;
     ID3DBlob* errBlob = nullptr;
 
-    HRESULT hr = D3DCompileFromFile(L"shader/mosaicVS.hlsl", nullptr, nullptr, "main", "vs_5_0", 0, 0, &vsBlob, &errBlob);
+    HRESULT hr = D3DCompileFromFile(L"shader/horrorVS.hlsl", nullptr, nullptr, "main", "vs_5_0", 0, 0, &vsBlob, &errBlob);
     if (FAILED(hr))
     {
         if (errBlob) { OutputDebugStringA((const char*)errBlob->GetBufferPointer()); errBlob->Release(); }
@@ -132,7 +141,8 @@ HRESULT Mosaic::CreateShaders()
     vsBlob->Release();
     if (FAILED(hr)) return hr;
 
-    hr = D3DCompileFromFile(L"shader/mosaicPS.hlsl", nullptr, nullptr, "main", "ps_5_0", 0, 0, &psBlob, &errBlob);
+    // Note: entry point is ps_main to avoid build-time confusion
+    hr = D3DCompileFromFile(L"shader/horrorPS.hlsl", nullptr, nullptr, "ps_main", "ps_5_0", 0, 0, &psBlob, &errBlob);
     if (FAILED(hr))
     {
         if (errBlob) { OutputDebugStringA((const char*)errBlob->GetBufferPointer()); errBlob->Release(); }
@@ -140,100 +150,88 @@ HRESULT Mosaic::CreateShaders()
     }
 
     hr = GetDevice()->CreatePixelShader(psBlob->GetBufferPointer(), psBlob->GetBufferSize(), nullptr, &m_PS);
+    if (FAILED(hr)) { psBlob->Release(); return hr; }
     psBlob->Release();
-    return hr;
+
+    return S_OK;
 }
 
-void Mosaic::SetRectSize(int size)
+void Horror::Update()
 {
-    if (size < 1) size = 1;
-    if (size > 512) size = 512;
-    m_RectSize = size;
-}
+    // Advance noise seed per frame
+    m_NoiseSeed.x += m_NoiseAddPerFrame.x;
+    m_NoiseSeed.y += m_NoiseAddPerFrame.y;
 
-void Mosaic::Update()
-{
-    // Handle UP/DOWN keys for mosaic block size
-    if (Keyboard_IsKeyDownTrigger(KK_UP))
+    // Reset if length too large to avoid long-run banding/precision issues
+    float len2 = m_NoiseSeed.x * m_NoiseSeed.x + m_NoiseSeed.y * m_NoiseSeed.y;
+    if (len2 > 1000.0f * 1000.0f) // threshold: length > 1000
     {
-        SetRectSize(m_RectSize + 1);
-    }
-    if (Keyboard_IsKeyDownTrigger(KK_DOWN))
-    {
-        SetRectSize(m_RectSize - 1);
+        m_NoiseSeed = XMFLOAT2(0.0f, 0.0f);
     }
 }
 
-void Mosaic::BeginScene()
+void Horror::BeginScene()
 {
     auto ctx = GetDeviceContext();
-    // Bind offscreen RTV + DSV
+    // Bind offscreen RTV + DSV and clear
     ctx->OMSetRenderTargets(1, &m_OffscreenRTV, m_OffscreenDSV);
 
-    // Clear
     float clear[4] = {0,0,0,1};
     ctx->ClearRenderTargetView(m_OffscreenRTV, clear);
     ctx->ClearDepthStencilView(m_OffscreenDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
-void Mosaic::EndSceneAndDraw()
+void Horror::EndSceneAndDraw()
 {
     auto ctx = GetDeviceContext();
 
-    // Bind backbuffer RTV/DSV
+    // Bind backbuffer
     BindBackBuffer();
 
-    if (!m_Enabled)
-    {
-        // When disabled, just blit the offscreen texture 1:1 without mosaic.
-        // Reuse the same full-screen pass but with RectSize = 1.
-        SetDepthEnable(false);
-        ctx->IASetInputLayout(m_InputLayout);
-        ctx->VSSetShader(m_VS, nullptr, 0);
-        ctx->PSSetShader(m_PS, nullptr, 0);
-
-        UINT stride = sizeof(FSVertex);
-        UINT offset = 0;
-        ctx->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
-        ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
-
-        ctx->PSSetShaderResources(0, 1, &m_OffscreenSRV);
-
-        XMFLOAT4 param((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, 1.0f, 0.0f);
-        SetParameter(param);
-
-        ctx->Draw(4, 0);
-
-        ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
-        ctx->PSSetShaderResources(0, 1, nullSRV);
-        return;
-    }
-
-    // Back buffer resolve pass: depth off
+    // Depth off for fullscreen pass
     SetDepthEnable(false);
 
-    // Set shaders and input layout for fullscreen pass
+    // Set shaders and state
     ctx->IASetInputLayout(m_InputLayout);
     ctx->VSSetShader(m_VS, nullptr, 0);
     ctx->PSSetShader(m_PS, nullptr, 0);
 
-    // Fullscreen quad VB
     UINT stride = sizeof(FSVertex);
     UINT offset = 0;
     ctx->IASetVertexBuffers(0, 1, &m_VertexBuffer, &stride, &offset);
     ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
-    // Bind SRV from first pass
+    // Bind SRV
     ctx->PSSetShaderResources(0, 1, &m_OffscreenSRV);
 
-    // Set Parameter = {ScreenW, ScreenH, RectSize, 0}
-    XMFLOAT4 param((float)SCREEN_WIDTH, (float)SCREEN_HEIGHT, (float)m_RectSize, 0.0f);
-    SetParameter(param);
+    // Update and bind HorrorParams at b7
+    HorrorCB cb = {};
+    cb.NoiseSeed = m_NoiseSeed;
+    cb.NoiseScale = m_NoiseScale;
+    cb.GrayScaleEnabled = m_GrayScaleEnabled;
+    cb.ContrastPower = m_ContrastPower;
+    cb.NoiseAddPerFrame = m_NoiseAddPerFrame;
 
-    // Draw 4 verts
+    // Create a transient constant buffer (small and simple for minimal sample)
+    D3D11_BUFFER_DESC bd = {};
+    bd.ByteWidth = sizeof(HorrorCB);
+    bd.Usage = D3D11_USAGE_DEFAULT;
+    bd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+    D3D11_SUBRESOURCE_DATA init = { &cb, 0, 0 };
+
+    ID3D11Buffer* cbuf = nullptr;
+    HRESULT hr = GetDevice()->CreateBuffer(&bd, &init, &cbuf);
+    if (SUCCEEDED(hr))
+    {
+        ctx->PSSetConstantBuffers(7, 1, &cbuf);
+    }
+
+    // Draw fullscreen quad
     ctx->Draw(4, 0);
 
-    // Unbind SRV to avoid binding conflict next frame
+    // Cleanup
     ID3D11ShaderResourceView* nullSRV[1] = { nullptr };
     ctx->PSSetShaderResources(0, 1, nullSRV);
+
+    if (cbuf) { cbuf->Release(); }
 }
