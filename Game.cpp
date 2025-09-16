@@ -317,6 +317,11 @@ void DrawGame()
 
 	// 現在のシェーダー名を表示（下部）
 	char shaderInfo[256];
-	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch", shaderNames[currentShaderIndex]);
+	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
+
+	// 現在のポストエフェクト情報を表示（下部）
+	char mosaicInfo[256];
+	sprintf_s(mosaicInfo, "PostEffect: Mosaic %s (UP/DOWN to change size: %d)", g_Mosaic.GetEnabled() ? "ON" : "OFF", g_Mosaic.GetRectSize());
+	DrawTextDebugAtPosition(mosaicInfo, 10, 200, 600, 100);
 }
