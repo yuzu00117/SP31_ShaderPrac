@@ -141,6 +141,7 @@
     <ClCompile Include="DrawTextDebug.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="hemisphereLighting.cpp" />
+    <ClCompile Include="horror.cpp" />
     <ClCompile Include="keyboard.cpp" />
     <ClCompile Include="limLighting.cpp" />
     <ClCompile Include="main.cpp" />
@@ -171,6 +172,7 @@
     <ClInclude Include="DrawTextDebug.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="hemisphereLighting.h" />
+    <ClInclude Include="horror.h" />
     <ClInclude Include="keyboard.h" />
     <ClInclude Include="limLighting.h" />
     <ClInclude Include="main.h" />
@@ -300,6 +302,8 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="shader\horrorPS.hlsl" />
+    <FxCompile Include="shader\horrorVS.hlsl" />
     <FxCompile Include="shader\limLightingPS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>

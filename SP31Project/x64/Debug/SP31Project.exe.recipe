@@ -31,6 +31,12 @@
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\hemisphereLightingVS.cso</FullPath>
     </ContentFile>
     <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\horrorPS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
+      <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\x64\Debug\horrorVS.cso</FullPath>
+    </ContentFile>
+    <ContentFile>
       <FullPath>C:\Users\yuzu0\Desktop\HAL\SP31\SP31_ShaderPrac\limLightingPS.cso</FullPath>
     </ContentFile>
     <ContentFile>

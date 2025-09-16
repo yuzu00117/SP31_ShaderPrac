@@ -12,6 +12,7 @@
 #include"polygon3D.h"
 #include"DrawTextDebug.h"
 #include "Mosaic.h"
+#include "horror.h"
 
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
@@ -36,7 +37,8 @@
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
-static Mosaic g_Mosaic;
+static Mosaic g_Mosaic; // 既存（参考用に残す）
+static Horror g_Horror; // 新規ホラーエフェクト
 
 //モデル系の呼び出し　シェーダー別
 PixelLightingModel pixelLightingModel;
@@ -120,8 +122,13 @@ void InitGame()
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
 
-	// モザイク初期化
-	g_Mosaic.Initialize();
+	// ポストエフェクト初期化
+	g_Mosaic.Initialize(); // 既存（参考）
+	g_Horror.Init();       // 新規ホラー
+	g_Horror.SetGrayScaleEnabled(true);
+	g_Horror.SetContrastPower(5.0f);
+	g_Horror.SetNoiseScale(120.0f);
+	g_Horror.SetNoiseAddPerFrame(XMFLOAT2(0.01f, 0.013f));
 }
 
 //===============================================
@@ -149,8 +156,9 @@ void FinalizeGame()
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
 
-	// モザイク終了
+	// ポストエフェクト終了
 	g_Mosaic.Finalize();
+	g_Horror.Finalize();
 
 	TextureFinalize();
 }
@@ -191,8 +199,9 @@ void UpdateGame()
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
 
-		// モザイク更新（↑↓でサイズ変更）
+		// ポストエフェクト更新
 		g_Mosaic.Update();
+		g_Horror.Update();
 	}
 }
 
@@ -200,8 +209,8 @@ void UpdateGame()
 //ゲームシーン描画
 void DrawGame()
 {
-	// 1pass: オフスクリーンへ
-	g_Mosaic.BeginScene();
+	// 1pass: オフスクリーンへ（ホラー効果）
+	g_Horror.BeginScene();
 
 	//3D用マトリクス設定
 	SetDepthEnable(true);//奥行き処理有効
@@ -309,8 +318,8 @@ void DrawGame()
 		}
 	}
 
-	// 2pass: モザイクをバックバッファへ
-	g_Mosaic.EndSceneAndDraw();
+	// 2pass: ホラーでバックバッファへ
+	g_Horror.EndSceneAndDraw();
 	
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
@@ -321,7 +330,8 @@ void DrawGame()
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
 	// 現在のポストエフェクト情報を表示（下部）
-	char mosaicInfo[256];
-	sprintf_s(mosaicInfo, "PostEffect: Mosaic %s (UP/DOWN to change size: %d)", g_Mosaic.GetEnabled() ? "ON" : "OFF", g_Mosaic.GetRectSize());
-	DrawTextDebugAtPosition(mosaicInfo, 10, 200, 600, 100);
+	char postInfo[256];
+	sprintf_s(postInfo, "PostEffect: Horror Noise (Gray=%s, Scale=%.1f, Power=%.1f)",
+			 ("ON"), 120.0f, 5.0f);
+	DrawTextDebugAtPosition(postInfo, 10, 200, 800, 100);
 }
