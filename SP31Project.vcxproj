@@ -153,6 +153,7 @@
     <ClCompile Include="polygon2D.cpp" />
     <ClCompile Include="polygon3D.cpp" />
     <ClCompile Include="pixeLighting.cpp" />
+    <ClCompile Include="posterize.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="skyDome.cpp" />
     <ClCompile Include="spotLighting.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="bumpMapField.h" />
     <ClInclude Include="polygon3D.h" />
     <ClInclude Include="pixeLighting.h" />
+    <ClInclude Include="posterize.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="skyDome.h" />
     <ClInclude Include="spotLighting.h" />
@@ -396,6 +398,8 @@
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(Filename).cso</ObjectFileOutput>
       <ObjectFileOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(Filename).cso</ObjectFileOutput>
     </FxCompile>
+    <FxCompile Include="shader\posterizePS.hlsl" />
+    <FxCompile Include="shader\posterizeVS.hlsl" />
     <FxCompile Include="shader\skyDomePS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
