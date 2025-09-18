@@ -378,6 +378,7 @@ void DrawGame()
 	// 現在のシェーダー名を表示（下部）
 	char shaderInfo[256];
 	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
+	sprintf_s(shaderInfo, "ShaderModdel (SPACE to switch): %s", shaderNames[currentShaderIndex]);
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
 	// 現在のポストエフェクト情報を表示（下部）
