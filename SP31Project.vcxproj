@@ -134,6 +134,7 @@
     <None Include="DirectXTex.inl" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Bloom.cpp" />
     <ClCompile Include="bumpMapField.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="cookTorrance.cpp" />
@@ -166,6 +167,7 @@
     <ClCompile Include="vertexDirectionaLighting.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Bloom.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="cookTorrance.h" />
     <ClInclude Include="debugPrintf.h" />
@@ -200,6 +202,8 @@
     <ClInclude Include="vertexDirectionaLighting.h" />
   </ItemGroup>
   <ItemGroup>
+    <FxCompile Include="shader\bloomCompositePS.hlsl" />
+    <FxCompile Include="shader\bloomPrefilterPS.hlsl" />
     <FxCompile Include="shader\blurPS.hlsl" />
     <FxCompile Include="shader\blurVS.hlsl" />
     <FxCompile Include="shader\bumpPS.hlsl">

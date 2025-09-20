@@ -15,6 +15,7 @@
 #include "horror.h"
 #include "posterize.h"
 #include "GaussianBlur.h"
+#include "Bloom.h"
 
 //シェーダー系の呼び出し
 #include"pixelLightBlinnPhong.h"
@@ -43,9 +44,10 @@ static Mosaic g_Mosaic; // 既存（参考用に残す）
 static Horror g_Horror; // 既存ホラーエフェクト
 static Posterize g_Posterize; // 新規ポスタライズ
 static GaussianBlur g_Blur;   // ガウスぼかし
+static Bloom g_Bloom;         // Bloom
 
 // ポストエフェクト切り替え
-enum class PostEffectMode { Horror = 0, Mosaic = 1, Posterize = 2, Gaussian = 3, None = 4 };
+enum class PostEffectMode { Horror = 0, Mosaic = 1, Posterize = 2, Gaussian = 3, Bloom = 4, None = 5 };
 static PostEffectMode g_PostMode = PostEffectMode::Horror;
 
 //モデル系の呼び出し　シェーダー別
@@ -146,6 +148,13 @@ void InitGame()
 	g_Blur.Init();         // Gaussian blur
 	g_Blur.SetSigma(2.0f);
 	g_Blur.SetRadius(4);
+
+	g_Bloom.Init();        // Bloom
+	g_Bloom.SetThreshold(1.0f);
+	g_Bloom.SetSoftKnee(0.5f);
+	g_Bloom.SetIntensity(0.8f);
+	g_Bloom.SetSigma(2.0f);
+	g_Bloom.SetRadius(4);
 }
 
 //===============================================
@@ -178,6 +187,7 @@ void FinalizeGame()
 	g_Horror.Finalize();
 	g_Posterize.Finalize();
 	g_Blur.Finalize();
+	g_Bloom.Finalize();
 
 	TextureFinalize();
 }
@@ -197,13 +207,14 @@ void UpdateGame()
 		}
 		spaceKeyPressed = currentSpaceKeyState;
 
-		// Vキーでポストエフェクト切り替え（Horror -> Mosaic -> Posterize -> Gaussian -> None -> Horror ...）
+		// Vキーでポストエフェクト切り替え（Horror -> Mosaic -> Posterize -> Gaussian -> Bloom -> None -> Horror ...）
 		if (Keyboard_IsKeyDownTrigger(KK_V))
 		{
 			if      (g_PostMode == PostEffectMode::Horror)    g_PostMode = PostEffectMode::Mosaic;
 			else if (g_PostMode == PostEffectMode::Mosaic)    g_PostMode = PostEffectMode::Posterize;
 			else if (g_PostMode == PostEffectMode::Posterize) g_PostMode = PostEffectMode::Gaussian;
-			else if (g_PostMode == PostEffectMode::Gaussian)  g_PostMode = PostEffectMode::None;
+			else if (g_PostMode == PostEffectMode::Gaussian)  g_PostMode = PostEffectMode::Bloom;
+			else if (g_PostMode == PostEffectMode::Bloom)     g_PostMode = PostEffectMode::None;
 			else                                             g_PostMode = PostEffectMode::Horror;
 		}
 
@@ -233,6 +244,7 @@ void UpdateGame()
 		g_Horror.Update();
 		g_Posterize.Update();
 		g_Blur.Update();
+		g_Bloom.Update();
 	}
 }
 
@@ -254,6 +266,9 @@ void DrawGame()
 		break;
 	case PostEffectMode::Gaussian:
 		g_Blur.BeginScene();
+		break;
+	case PostEffectMode::Bloom:
+		g_Bloom.BeginScene();
 		break;
 	case PostEffectMode::None:
 		// 何もしない（バックバッファに直接描画）
@@ -382,6 +397,9 @@ void DrawGame()
 	case PostEffectMode::Gaussian:
 		g_Blur.EndSceneAndDraw();
 		break;
+	case PostEffectMode::Bloom:
+		g_Bloom.EndSceneAndDraw();
+		break;
 	case PostEffectMode::None:
 		// 何もしない
 		break;
@@ -401,7 +419,8 @@ void DrawGame()
 		(g_PostMode == PostEffectMode::Horror)   ? "Horror"   :
 		(g_PostMode == PostEffectMode::Mosaic)   ? "Mosaic"   :
 		(g_PostMode == PostEffectMode::Posterize)? "Posterize" :
-		(g_PostMode == PostEffectMode::Gaussian) ? "Gaussian" : "None";
+		(g_PostMode == PostEffectMode::Gaussian) ? "Gaussian" :
+		(g_PostMode == PostEffectMode::Bloom)     ? "Bloom"     : "None";
 	char postInfo[256];
 	sprintf_s(postInfo, "PostEffect (V to switch): %s", peName);
 	DrawTextDebugAtPosition(postInfo, 10, 200, 800, 100);
