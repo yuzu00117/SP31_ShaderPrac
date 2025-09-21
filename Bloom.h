@@ -25,6 +25,7 @@ public:
     void SetIntensity(float v) { m_Intensity = (v < 0.0f) ? 0.0f : v; }
     void SetSigma(float s)     { m_Sigma = (s <= 0.0f) ? 0.1f : s; }
     void SetRadius(int r)      { m_Radius = (r < 1) ? 1 : (r > 10 ? 10 : r); }
+    float GetIntensity() const { return m_Intensity; }
 
 private:
     HRESULT CreateOffscreenTargets();

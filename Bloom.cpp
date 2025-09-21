@@ -203,9 +203,10 @@ HRESULT Bloom::CreateShaders()
 
 void Bloom::Update()
 {
-    // Optional key controls (example)
-    if (Keyboard_IsKeyDownTrigger(KK_RIGHT)) { SetIntensity(m_Intensity + 0.1f); }
-    if (Keyboard_IsKeyDownTrigger(KK_LEFT))  { SetIntensity(m_Intensity - 0.1f); }
+    // Adjust bloom intensity with keys (optional): J/K to decrease/increase
+    if (Keyboard_IsKeyDownTrigger(KK_J)) { SetIntensity(m_Intensity - 0.1f); }
+    if (Keyboard_IsKeyDownTrigger(KK_K)) { SetIntensity(m_Intensity + 0.1f); }
+    if (m_Intensity < 0.0f) m_Intensity = 0.0f;
 }
 
 void Bloom::BeginScene()

@@ -416,12 +416,19 @@ void DrawGame()
 
 	// 現在のポストエフェクト情報を表示（下部）
 	const char* peName =
-		(g_PostMode == PostEffectMode::Horror)   ? "Horror"   :
-		(g_PostMode == PostEffectMode::Mosaic)   ? "Mosaic"   :
-		(g_PostMode == PostEffectMode::Posterize)? "Posterize" :
-		(g_PostMode == PostEffectMode::Gaussian) ? "Gaussian" :
+		(g_PostMode == PostEffectMode::Horror)    ? "Horror"   :
+		(g_PostMode == PostEffectMode::Mosaic)    ? "Mosaic"   :
+		(g_PostMode == PostEffectMode::Posterize) ? "Posterize" :
+		(g_PostMode == PostEffectMode::Gaussian)  ? "Gaussian" :
 		(g_PostMode == PostEffectMode::Bloom)     ? "Bloom"     : "None";
 	char postInfo[256];
 	sprintf_s(postInfo, "PostEffect (V to switch): %s", peName);
 	DrawTextDebugAtPosition(postInfo, 10, 200, 800, 100);
+
+	if (g_PostMode == PostEffectMode::Bloom)
+	{
+		char bloomInfo[128];
+		sprintf_s(bloomInfo, "Bloom Intensity (J/K to -/+): %.2f", g_Bloom.GetIntensity());
+		DrawTextDebugAtPosition(bloomInfo, 10, 230, 800, 100);
+	}
 }
