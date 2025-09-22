@@ -214,6 +214,16 @@ void Bloom::BeginScene()
     auto ctx = GetDeviceContext();
     ctx->OMSetRenderTargets(1, &m_OffscreenRTV, m_OffscreenDSV);
 
+    // Ensure full-resolution viewport for scene rendering
+    D3D11_VIEWPORT vpFull = {};
+    vpFull.Width = (FLOAT)SCREEN_WIDTH;
+    vpFull.Height = (FLOAT)SCREEN_HEIGHT;
+    vpFull.MinDepth = 0.0f;
+    vpFull.MaxDepth = 1.0f;
+    vpFull.TopLeftX = 0.0f;
+    vpFull.TopLeftY = 0.0f;
+    ctx->RSSetViewports(1, &vpFull);
+
     float clear[4] = {0,0,0,1};
     ctx->ClearRenderTargetView(m_OffscreenRTV, clear);
     ctx->ClearDepthStencilView(m_OffscreenDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
@@ -234,6 +244,16 @@ void Bloom::EndSceneAndDraw()
     ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLESTRIP);
 
     ID3D11ShaderResourceView* nullSRV2[2] = { nullptr, nullptr };
+
+    // Half-resolution viewport for bloom passes
+    D3D11_VIEWPORT vpHalf = {};
+    vpHalf.Width  = (FLOAT)max(1u, SCREEN_WIDTH  / 2);
+    vpHalf.Height = (FLOAT)max(1u, SCREEN_HEIGHT / 2);
+    vpHalf.MinDepth = 0.0f;
+    vpHalf.MaxDepth = 1.0f;
+    vpHalf.TopLeftX = 0.0f;
+    vpHalf.TopLeftY = 0.0f;
+    ctx->RSSetViewports(1, &vpHalf);
 
     // 1) Prefilter (scene -> half-res bloom)
     ctx->PSSetShader(m_PSPrefilter, nullptr, 0);
@@ -297,7 +317,16 @@ void Bloom::EndSceneAndDraw()
     ctx->PSSetShaderResources(0, 1, nullSRV2);
     if (cbuf) { cbuf->Release(); cbuf = nullptr; }
 
-    // 3) Composite to backbuffer
+    // 3) Composite to backbuffer (restore full viewport)
+    D3D11_VIEWPORT vpFull = {};
+    vpFull.Width = (FLOAT)SCREEN_WIDTH;
+    vpFull.Height = (FLOAT)SCREEN_HEIGHT;
+    vpFull.MinDepth = 0.0f;
+    vpFull.MaxDepth = 1.0f;
+    vpFull.TopLeftX = 0.0f;
+    vpFull.TopLeftY = 0.0f;
+    ctx->RSSetViewports(1, &vpFull);
+
     BindBackBuffer();
     ctx->PSSetShader(m_PSComposite, nullptr, 0);
 

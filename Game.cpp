@@ -283,7 +283,7 @@ void DrawGame()
 	ResetWorldViewProjection3D();
 	
 	// スカイドームを最初に描画（背景として、深度書き込み無効）
-	skyDome.DrawSkyDome();
+	//skyDome.DrawSkyDome();
 
 	//モデル系の描画（深度テスト有効で通常描画）
 	//test3D.DrawPolygon3D();
