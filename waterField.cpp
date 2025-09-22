@@ -77,8 +77,8 @@ HRESULT WaterField::InitWaterField(void)
 {
 
 	//テクスチャ読み込み
-	int Texture = TextureLoad(L"asset\\texture\\Brick.jpg");
-	NormalMapTexID = TextureLoad(L"asset\\texture\\Brick_Normal.png"); // 水面用ノーマルマップ
+	int Texture = TextureLoad(L"asset\\texture\\Water.png");
+	NormalMapTexID = TextureLoad(L"asset\\texture\\Water_Normal.png"); // 水面用ノーマルマップ
 
 	// シェーダーの読み込み
 	CreateVertexShader(&VertexShader, &VertexLayout, "bumpVS.cso");
