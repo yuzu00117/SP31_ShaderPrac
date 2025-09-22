@@ -43,6 +43,11 @@ public:
 	void FinalizeWaterField(void);
 	void UpdateWaterField(void);
 	void DrawWaterField(void);
+
+	// 位置・回転・スケール設定用の簡易API
+	void SetPosition(const XMFLOAT3& pos) { Position = pos; }
+	void SetRotate(const XMFLOAT3& rot) { Rotate = rot; }
+	void SetScale(const XMFLOAT3& scl) { Scale = scl; }
 };
 
 

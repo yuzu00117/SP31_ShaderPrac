@@ -32,6 +32,7 @@
 #include"toon2.h"  // ランプテクスチャトゥーン追加
 
 #include"bumpMapField.h"
+#include"waterField.h" // 水面フィールド
 #include"skyDome.h"  // スカイドーム追加
 
 //===============================================
@@ -65,6 +66,7 @@ Toon1Model toon1Model;  // Toonシェーダー追加
 Toon2Model toon2Model;  // ランプテクスチャToonシェーダー追加
 
 BumpMapField bumpMapField;
+WaterField waterField;  // 水面フィールド
 SkyDome skyDome;  // スカイドーム追加
 
 //ポーズフラグ
@@ -117,6 +119,9 @@ void InitGame()
 	//3Dオブジェクト初期化
 	test3D.InitPolygon3D();
 	bumpMapField.InitBumpMapField();
+	waterField.InitWaterField();
+	// バンプマップの隣（+X方向）に配置。SIZE=5なので中心を+5移動で面がちょうど接する
+	waterField.SetPosition(XMFLOAT3(5.0f, 0.0f, 0.0f));
 	skyDome.InitSkyDome();  // スカイドーム初期化
 	//モデル系の初期化
 	pixelLightingModel.InitPolygonModel();
@@ -167,6 +172,7 @@ void FinalizeGame()
 	//モデル系の終了
 	test3D.FinalizePolygon3D();
 	bumpMapField.FinalizeBumpMapField();
+	waterField.FinalizeWaterField();
 	skyDome.FinalizeSkyDome();  // スカイドーム終了処理
 	//シェーダーを利用したモデルの終了
 	pixelLightingModel.FinalizePolygonModel();
@@ -224,6 +230,7 @@ void UpdateGame()
 		//モデル系の更新
 		test3D.UpdatePolygon3D();
 		bumpMapField.UpdateBumpMapField();
+		waterField.UpdateWaterField();
 		skyDome.UpdateSkyDome();  // スカイドーム更新
 		//シェーダーを利用したモデルの更新
 		pixelLightingModel.UpdatePolygonModel();
@@ -283,11 +290,12 @@ void DrawGame()
 	ResetWorldViewProjection3D();
 	
 	// スカイドームを最初に描画（背景として、深度書き込み無効）
-	//skyDome.DrawSkyDome();
+	skyDome.DrawSkyDome();
 
 	//モデル系の描画（深度テスト有効で通常描画）
 	//test3D.DrawPolygon3D();
 	bumpMapField.DrawBumpMapField();
+	waterField.DrawWaterField();
 
 	//シェーダーを利用したモデルの描画（現在選択されたもののみ）
 	switch (currentShaderIndex)
