@@ -165,6 +165,7 @@
     <ClCompile Include="toon2.cpp" />
     <ClCompile Include="unlitColor.cpp" />
     <ClCompile Include="vertexDirectionaLighting.cpp" />
+    <ClCompile Include="waterField.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bloom.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="toon2.h" />
     <ClInclude Include="unlitColor.h" />
     <ClInclude Include="vertexDirectionaLighting.h" />
+    <ClInclude Include="waterField.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="shader\bloomCompositePS.hlsl" />
