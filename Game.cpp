@@ -30,9 +30,11 @@
 #include"disneyPBR.h"
 #include"toon1.h"
 #include"toon2.h"  // ランプテクスチャトゥーン追加
+#include "ProjectionShadow.h"
 
 #include"bumpMapField.h"
 #include"waterField.h" // 水面フィールド
+#include "ProjectionShadowField.h"
 #include"skyDome.h"  // スカイドーム追加
 
 //===============================================
@@ -64,10 +66,12 @@ CookTorranceModel cookTorranceModel;
 DisneyPBRModel disneyPBRModel;
 Toon1Model toon1Model;  // Toonシェーダー追加
 Toon2Model toon2Model;  // ランプテクスチャToonシェーダー追加
+ProjectionShadow projectionShadow; // プロジェクションシャドウ追加
 
 BumpMapField bumpMapField;
 WaterField waterField;  // 水面フィールド
 SkyDome skyDome;  // スカイドーム追加
+ProjectionShadowField projectionShadowField; // プロジェクションシャドウフィールド
 
 //ポーズフラグ
 static	bool	pause = false;
@@ -120,6 +124,7 @@ void InitGame()
 	test3D.InitPolygon3D();
 	bumpMapField.InitBumpMapField();
 	waterField.InitWaterField();
+	projectionShadowField.InitProjectionShadowField();
 	// バンプマップの隣（+X方向）に配置。SIZE=5なので中心を+5移動で面がちょうど接する
 	waterField.SetPosition(XMFLOAT3(5.0f, 0.0f, 0.0f));
 	skyDome.InitSkyDome();  // スカイドーム初期化
@@ -136,6 +141,7 @@ void InitGame()
 	disneyPBRModel.InitPolygonModel();
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
+	projectionShadow.InitPolygonModel(); // プロジェクションシャドウ初期化
 
 	// ポストエフェクト初期化
 	g_Mosaic.Initialize(); // 既存（参考）
@@ -173,6 +179,7 @@ void FinalizeGame()
 	test3D.FinalizePolygon3D();
 	bumpMapField.FinalizeBumpMapField();
 	waterField.FinalizeWaterField();
+	projectionShadowField.FinalizeProjectionShadowField();
 	skyDome.FinalizeSkyDome();  // スカイドーム終了処理
 	//シェーダーを利用したモデルの終了
 	pixelLightingModel.FinalizePolygonModel();
@@ -187,6 +194,7 @@ void FinalizeGame()
 	disneyPBRModel.FinalizePolygonModel();
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
+	projectionShadow.FinalizePolygonModel(); // プロジェクションシャドウ終了
 
 	// ポストエフェクト終了
 	g_Mosaic.Finalize();
@@ -231,6 +239,7 @@ void UpdateGame()
 		test3D.UpdatePolygon3D();
 		bumpMapField.UpdateBumpMapField();
 		waterField.UpdateWaterField();
+		projectionShadowField.UpdateProjectionShadowField();
 		skyDome.UpdateSkyDome();  // スカイドーム更新
 		//シェーダーを利用したモデルの更新
 		pixelLightingModel.UpdatePolygonModel();
@@ -245,6 +254,7 @@ void UpdateGame()
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
+		projectionShadow.UpdatePolygonModel(); // プロジェクションシャドウ更新
 
 		// ポストエフェクト更新
 		g_Mosaic.Update();
@@ -294,49 +304,53 @@ void DrawGame()
 
 	//モデル系の描画（深度テスト有効で通常描画）
 	//test3D.DrawPolygon3D();
-	bumpMapField.DrawBumpMapField();
+	// bumpMapField.DrawBumpMapField();
 	waterField.DrawWaterField();
 
-	//シェーダーを利用したモデルの描画（現在選択されたもののみ）
-	switch (currentShaderIndex)
-	{
-	case 0:
-		pixelLightingModel.DrawPolygonModel();
-		break;
-	case 1:
-		pixelLightBlinnPhongModel.DrawPolygonModel();
-		break;
-	case 2:
-		vertexDirectionalLightingModel.DrawPolygonModel();
-		break;
-	case 3:
-		hemisphereLighting.DrawPolygonModel();
-		break;
-	case 4:
-		unlitColorModel.DrawPolygonModel();
-		break;
-	case 5:
-		pointLightBlinnPhongModel.DrawPolygonModel();
-		break;
-	case 6:
-		spotLightingModel.DrawPolygonModel();
-		break;
-	case 7:
-		limLightingModel.DrawPolygonModel();
-		break;
-	case 8:
-		cookTorranceModel.DrawPolygonModel();
-		break;
-	case 9:
-		disneyPBRModel.DrawPolygonModel();
-		break;
-	case 10:
-		toon1Model.DrawPolygonModel();
-		break;
-	case 11:
-		toon2Model.DrawPolygonModel();  // ランプテクスチャトゥーン描画
-		break;
-	}
+	// --- プロジェクションシャドウ用のフィールド＆モデル描画を追加 ---
+    projectionShadowField.DrawProjectionShadowField();
+    projectionShadow.DrawPolygonModel(0); // 通常描画パス
+
+	// //シェーダーを利用したモデルの描画（現在選択されたもののみ）
+	// switch (currentShaderIndex)
+	// {
+	// case 0:
+	// 	pixelLightingModel.DrawPolygonModel();
+	// 	break;
+	// case 1:
+	// 	pixelLightBlinnPhongModel.DrawPolygonModel();
+	// 	break;
+	// case 2:
+	// 	vertexDirectionalLightingModel.DrawPolygonModel();
+	// 	break;
+	// case 3:
+	// 	hemisphereLighting.DrawPolygonModel();
+	// 	break;
+	// case 4:
+	// 	unlitColorModel.DrawPolygonModel();
+	// 	break;
+	// case 5:
+	// 	pointLightBlinnPhongModel.DrawPolygonModel();
+	// 	break;
+	// case 6:
+	// 	spotLightingModel.DrawPolygonModel();
+	// 	break;
+	// case 7:
+	// 	limLightingModel.DrawPolygonModel();
+	// 	break;
+	// case 8:
+	// 	cookTorranceModel.DrawPolygonModel();
+	// 	break;
+	// case 9:
+	// 	disneyPBRModel.DrawPolygonModel();
+	// 	break;
+	// case 10:
+	// 	toon1Model.DrawPolygonModel();
+	// 	break;
+	// case 11:
+	// 	toon2Model.DrawPolygonModel();  // ランプテクスチャトゥーン描画
+	// 	break;
+	// }
 
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();
@@ -416,11 +430,11 @@ void DrawGame()
 	// カメラのデバッグ情報を表示（上部）
 	CameraObject->DebugDraw();
 
-	// 現在のシェーダー名を表示（下部）
-	char shaderInfo[256];
-	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
-	sprintf_s(shaderInfo, "ShaderModdel (SPACE to switch): %s", shaderNames[currentShaderIndex]);
-	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
+	// // 現在のシェーダー名を表示（下部）
+	// char shaderInfo[256];
+	// sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
+	// sprintf_s(shaderInfo, "ShaderModdel (SPACE to switch): %s", shaderNames[currentShaderIndex]);
+	// DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
 	// 現在のポストエフェクト情報を表示（下部）
 	const char* peName =

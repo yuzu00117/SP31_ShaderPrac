@@ -116,6 +116,27 @@
     <ClCompile Include="Mosaic.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Bloom.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="GaussianBlur.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="horror.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="posterize.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectionShadowField.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="waterField.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="ProjectionShadow.cpp">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="polygon2D.h">
@@ -204,6 +225,27 @@
     </ClInclude>
     <ClInclude Include="Mosaic.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Bloom.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="GaussianBlur.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="horror.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="posterize.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectionShadowField.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="waterField.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="ProjectionShadow.h">
+      <Filter>ソース ファイル\フレームワーク\シェーダー周りのオブジェクトの呼び出し</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -298,5 +340,27 @@
     <FxCompile Include="shader\toon2PS.hlsl" />
     <FxCompile Include="shader\mosaicVS.hlsl" />
     <FxCompile Include="shader\mosaicPS.hlsl" />
+    <FxCompile Include="shader\bloomCompositePS.hlsl" />
+    <FxCompile Include="shader\bloomPrefilterPS.hlsl" />
+    <FxCompile Include="shader\blurPS.hlsl" />
+    <FxCompile Include="shader\blurVS.hlsl" />
+    <FxCompile Include="shader\horrorPS.hlsl" />
+    <FxCompile Include="shader\horrorVS.hlsl" />
+    <FxCompile Include="shader\posterizePS.hlsl" />
+    <FxCompile Include="shader\posterizeVS.hlsl" />
+    <FxCompile Include="shader\water_PS.hlsl" />
+    <FxCompile Include="shader\water_VS.hlsl" />
+    <FxCompile Include="shader\ProjectionShadow0PS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ProjectionShadow0VS .hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ProjectionShadow1PS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
+    <FxCompile Include="shader\ProjectionShadow1VS.hlsl">
+      <Filter>ソース ファイル\shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
