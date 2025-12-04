@@ -50,10 +50,6 @@ struct LIGHT
 	XMFLOAT4 SkyColor;//空の色
 	XMFLOAT4 GroundColor;//地面の色
 	XMFLOAT4 GroundNormal;//地面の法線
-
-	// ライトカメラ用
-	XMMATRIX ViewMatrix;
-	XMMATRIX ProjectionMatrix;
 };
 
 //*****************************************************************************
@@ -96,6 +92,3 @@ IDXGISwapChain* GetSwapChain(void);
 // 新規: バックバッファへRTV/DSVをバインド
 void BindBackBuffer();
 
-// PE描画（レンダーターゲット切り替え）
-void BeginPE(int n);
-ID3D11ShaderResourceView* GetPETexture(int n);

@@ -8,10 +8,6 @@
 ==============================================================================*/
 #include <io.h>
 #include "renderer.h"
-#include <d3dcompiler.h>
-#include <string>
-#include <vector>
-#pragma comment(lib, "d3dcompiler.lib")
 
 
 
@@ -57,15 +53,6 @@ XMMATRIX                g_ProjectionMatrix;
 ID3D11DepthStencilState* g_DepthStateEnable;
 ID3D11DepthStencilState* g_DepthStateDisable;
 
-// ====== Render To Texture 用 ======
-static const int PE_NUM = 1; // PDFは1枚だけ使用
-
-ID3D11Texture2D*           g_PETexture[PE_NUM];
-ID3D11RenderTargetView*    g_PERenderTargetView[PE_NUM];
-ID3D11ShaderResourceView*  g_PEShaderResourceView[PE_NUM];
-
-ID3D11Texture2D*           g_PEDepthTexture[PE_NUM];
-ID3D11DepthStencilView*    g_PEDepthStencilView[PE_NUM];
 
 
 ID3D11Device* GetDevice( void )
@@ -159,41 +146,6 @@ void SetParameter(XMFLOAT4 Parameter)
     GetDeviceContext()->UpdateSubresource(g_ParameterBuffer, 0, NULL, &Parameter, 0, 0);
 }
 
-static std::wstring ToWide(const char* path)
-{
-    if (!path) return std::wstring();
-    int len = MultiByteToWideChar(CP_ACP, 0, path, -1, nullptr, 0);
-    if (len <= 0) return std::wstring();
-    std::wstring w;
-    w.resize(len - 1);
-    MultiByteToWideChar(CP_ACP, 0, path, -1, &w[0], len);
-    return w;
-}
-
-void BeginPE(int n)
-{
-    g_ImmediateContext->OMSetRenderTargets(
-        1,
-        &g_PERenderTargetView[n],
-        g_PEDepthStencilView[n]
-    );
-
-    float ClearColor[4] = {1.0f, 1.0f, 1.0f, 1.0f}; // 白でクリア
-
-    if (n == 0)
-    {
-        ClearColor[2] = 0.5f; // PDFどおり：B成分だけ 0.5 に
-    }
-
-    g_ImmediateContext->ClearRenderTargetView(g_PERenderTargetView[n], ClearColor);
-    g_ImmediateContext->ClearDepthStencilView(g_PEDepthStencilView[n],
-        D3D11_CLEAR_DEPTH, 1.0f, 0);
-}
-
-ID3D11ShaderResourceView* GetPETexture(int n)
-{
-    return g_PEShaderResourceView[n];
-}
 
 //=============================================================================
 // 初期化処理
@@ -409,43 +361,6 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     material.Ambient = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
     SetMaterial(material);
 
-    // ------------------------------------------------------------
-    // PE（シャドウマップ）用テクスチャ作成
-    // ------------------------------------------------------------
-    // ------------------------------------------------------------
-// PE（シャドウマップ）用テクスチャ作成
-// ------------------------------------------------------------
-    for (int i = 0; i < PE_NUM; i++)
-    {
-        // カラー用
-        D3D11_TEXTURE2D_DESC texDesc = {};
-        texDesc.Width = SCREEN_WIDTH;
-        texDesc.Height = SCREEN_HEIGHT;
-        texDesc.MipLevels = 1;
-        texDesc.ArraySize = 1;
-        texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-        texDesc.SampleDesc.Count = 1;
-        texDesc.Usage = D3D11_USAGE_DEFAULT;
-        texDesc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-
-        g_D3DDevice->CreateTexture2D(&texDesc, NULL, &g_PETexture[i]);
-        g_D3DDevice->CreateRenderTargetView(g_PETexture[i], NULL, &g_PERenderTargetView[i]);
-        g_D3DDevice->CreateShaderResourceView(g_PETexture[i], NULL, &g_PEShaderResourceView[i]);
-
-        // 深度用
-        D3D11_TEXTURE2D_DESC dDesc = {};
-        dDesc.Width = SCREEN_WIDTH;
-        dDesc.Height = SCREEN_HEIGHT;
-        dDesc.MipLevels = 1;
-        dDesc.ArraySize = 1;
-        dDesc.Format = DXGI_FORMAT_D24_UNORM_S8_UINT;
-        dDesc.SampleDesc.Count = 1;
-        dDesc.Usage = D3D11_USAGE_DEFAULT;
-        dDesc.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-
-        g_D3DDevice->CreateTexture2D(&dDesc, NULL, &g_PEDepthTexture[i]);
-        g_D3DDevice->CreateDepthStencilView(g_PEDepthTexture[i], NULL, &g_PEDepthStencilView[i]);
-    }
 
     return S_OK;
 }
@@ -468,16 +383,6 @@ void FinalizeRenderer(void)
     if( g_SwapChain )           g_SwapChain->Release();
     if( g_ImmediateContext )    g_ImmediateContext->Release();
     if( g_D3DDevice )           g_D3DDevice->Release();
-
-    // PE の解放
-    for (int i = 0; i < PE_NUM; i++)
-    {
-        if (g_PEDepthStencilView[i]) { g_PEDepthStencilView[i]->Release(); g_PEDepthStencilView[i] = nullptr; }
-        if (g_PEShaderResourceView[i]) { g_PEShaderResourceView[i]->Release(); g_PEShaderResourceView[i] = nullptr; }
-        if (g_PERenderTargetView[i]) { g_PERenderTargetView[i]->Release(); g_PERenderTargetView[i] = nullptr; }
-        if (g_PEDepthTexture[i]) { g_PEDepthTexture[i]->Release(); g_PEDepthTexture[i] = nullptr; }
-        if (g_PETexture[i]) { g_PETexture[i]->Release(); g_PETexture[i] = nullptr; }
-    }
 }
 
 
@@ -508,66 +413,18 @@ void Present(void)
 void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** VertexLayout, const char* FileName)
 {
 
-    FILE* file = fopen(FileName, "rb");
-    if (file)
-    {
-        long int fsize = _filelength(_fileno(file));
-        unsigned char* buffer = new unsigned char[fsize];
-        fread(buffer, fsize, 1, file);
-        fclose(file);
+    FILE* file;
+    long int fsize;
 
-        g_D3DDevice->CreateVertexShader(buffer, fsize, NULL, VertexShader);
+    file = fopen(FileName, "rb");
+    fsize = _filelength(_fileno(file));
+    unsigned char* buffer = new unsigned char[fsize];
+    fread(buffer, fsize, 1, file);
+    fclose(file);
 
-        // 入力レイアウト生成
-        D3D11_INPUT_ELEMENT_DESC layout[] =
-        {
-            { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "NORMAL",   0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 4 * 3, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "COLOR",    0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 4 * 6, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-            { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 10, D3D11_INPUT_PER_VERTEX_DATA, 0 }
-        };
-        UINT numElements = ARRAYSIZE(layout);
+    g_D3DDevice->CreateVertexShader(buffer, fsize, NULL, VertexShader);
 
-        g_D3DDevice->CreateInputLayout(layout,
-            numElements,
-            buffer,
-            fsize,
-            VertexLayout);
-
-        delete[] buffer;
-        return;
-    }
-
-    // Fallback: compile HLSL (derive .hlsl if .cso not found)
-    char hlslPath[MAX_PATH] = {};
-    strncpy(hlslPath, FileName, MAX_PATH - 1);
-    size_t len = strlen(hlslPath);
-    if (len >= 4 && _stricmp(hlslPath + (len - 4), ".cso") == 0) {
-        hlslPath[len - 4] = '\0';
-        strncat(hlslPath, ".hlsl", MAX_PATH - 1 - strlen(hlslPath));
-    }
-
-    ID3DBlob* shaderBlob = nullptr;
-    ID3DBlob* errorBlob = nullptr;
-    std::wstring whlsl = ToWide(hlslPath);
-    HRESULT hr = D3DCompileFromFile(
-        whlsl.c_str(),
-        nullptr,
-        D3D_COMPILE_STANDARD_FILE_INCLUDE,
-        "main",
-        "vs_4_0",
-        0,
-        0,
-        &shaderBlob,
-        &errorBlob);
-    if (FAILED(hr)) {
-        if (errorBlob) errorBlob->Release();
-        return;
-    }
-
-    g_D3DDevice->CreateVertexShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL, VertexShader);
-
-    // Input layout from compiled blob
+    // 入力レイアウト生成
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -576,9 +433,14 @@ void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** V
         { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 4 * 10, D3D11_INPUT_PER_VERTEX_DATA, 0 }
     };
     UINT numElements = ARRAYSIZE(layout);
-    g_D3DDevice->CreateInputLayout(layout, numElements, shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), VertexLayout);
 
-    shaderBlob->Release();
+    g_D3DDevice->CreateInputLayout(layout,
+        numElements,
+        buffer,
+        fsize,
+        VertexLayout);
+
+    delete[] buffer;
 }
 
 
@@ -586,49 +448,18 @@ void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** V
 // ピクセルシェーダ生成
 void CreatePixelShader(ID3D11PixelShader** PixelShader, const char* FileName)
 {
-    FILE* file = fopen(FileName, "rb");
-    if (file)
-    {
-        long int fsize = _filelength(_fileno(file));
-        unsigned char* buffer = new unsigned char[fsize];
-        fread(buffer, fsize, 1, file);
-        fclose(file);
+    FILE* file;
+    long int fsize;
 
-        g_D3DDevice->CreatePixelShader(buffer, fsize, NULL, PixelShader);
+    file = fopen(FileName, "rb");
+    fsize = _filelength(_fileno(file));
+    unsigned char* buffer = new unsigned char[fsize];
+    fread(buffer, fsize, 1, file);
+    fclose(file);
 
-        delete[] buffer;
-        return;
-    }
+    g_D3DDevice->CreatePixelShader(buffer, fsize, NULL, PixelShader);
 
-    // Fallback: compile HLSL
-    char hlslPath[MAX_PATH] = {};
-    strncpy(hlslPath, FileName, MAX_PATH - 1);
-    size_t len = strlen(hlslPath);
-    if (len >= 4 && _stricmp(hlslPath + (len - 4), ".cso") == 0) {
-        hlslPath[len - 4] = '\0';
-        strncat(hlslPath, ".hlsl", MAX_PATH - 1 - strlen(hlslPath));
-    }
-
-    ID3DBlob* shaderBlob = nullptr;
-    ID3DBlob* errorBlob = nullptr;
-    std::wstring whlsl = ToWide(hlslPath);
-    HRESULT hr = D3DCompileFromFile(
-        whlsl.c_str(),
-        nullptr,
-        D3D_COMPILE_STANDARD_FILE_INCLUDE,
-        "main",
-        "ps_4_0",
-        0,
-        0,
-        &shaderBlob,
-        &errorBlob);
-    if (FAILED(hr)) {
-        if (errorBlob) errorBlob->Release();
-        return;
-    }
-
-    g_D3DDevice->CreatePixelShader(shaderBlob->GetBufferPointer(), shaderBlob->GetBufferSize(), NULL, PixelShader);
-    shaderBlob->Release();
+    delete[] buffer;
 }
 
 void SetLight(LIGHT Light)

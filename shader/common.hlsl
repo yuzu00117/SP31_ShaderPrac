@@ -25,8 +25,6 @@ struct PS_IN
 {
     float4 Position : SV_POSITION;
     float4 WorldPosition : POSITION0;
-    float4 LightPosition : POSITION1;
-
     float4 Normal : NORMAL0;
     float4 Diffuse : COLOR0;
     float2 TexCoord : TEXCOORD0;
@@ -49,9 +47,6 @@ struct LIGHT
     float4 SkyColor; //天球色
     float4 GroundColor;//地面色
     float4 GroundNormal;//地面法線
-
-    matrix ViewMatrix;
-    matrix ProjectionMatrix;
    
 };
 
