@@ -1,4 +1,4 @@
-#include "Main.h"
+ï»¿#include "Main.h"
 #include "Renderer.h"
 #include "Manager.h"
 #include "Sprite.h"
@@ -17,7 +17,7 @@
 #include "GaussianBlur.h"
 #include "Bloom.h"
 
-//ƒVƒF[ƒ_[Œn‚ÌŒÄ‚Ño‚µ
+//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç³»ã®å‘¼ã³å‡ºã—
 #include"pixelLightBlinnPhong.h"
 #include"pixeLighting.h"
 #include"vertexDirectionaLighting.h"
@@ -29,29 +29,30 @@
 #include"cookTorrance.h"
 #include"disneyPBR.h"
 #include"toon1.h"
-#include"toon2.h"  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒƒgƒD[ƒ“’Ç‰Á
+#include"toon2.h"  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒˆã‚¥ãƒ¼ãƒ³è¿½åŠ 
+#include"furShader.h"  // ãƒ•ã‚¡ãƒ¼ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¿½åŠ 
 
 #include"bumpMapField.h"
-#include"waterField.h" // …–ÊƒtƒB[ƒ‹ƒh
-#include"skyDome.h"  // ƒXƒJƒCƒh[ƒ€’Ç‰Á
+#include"waterField.h" // æ°´é¢ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+#include"skyDome.h"  // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ è¿½åŠ 
 
 //===============================================
-//ƒOƒ[ƒoƒ‹•Ï”
+//ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°
  
 Camera		*CameraObject;
 Object2D	test2D;
 Object3D    test3D;
-static Mosaic g_Mosaic; // Šù‘¶iQl—p‚Éc‚·j
-static Horror g_Horror; // Šù‘¶ƒzƒ‰[ƒGƒtƒFƒNƒg
-static Posterize g_Posterize; // V‹Kƒ|ƒXƒ^ƒ‰ƒCƒY
-static GaussianBlur g_Blur;   // ƒKƒEƒX‚Ú‚©‚µ
+static Mosaic g_Mosaic; // æ—¢å­˜ï¼ˆå‚è€ƒç”¨ã«æ®‹ã™ï¼‰
+static Horror g_Horror; // æ—¢å­˜ãƒ›ãƒ©ãƒ¼ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+static Posterize g_Posterize; // æ–°è¦ãƒã‚¹ã‚¿ãƒ©ã‚¤ã‚º
+static GaussianBlur g_Blur;   // ã‚¬ã‚¦ã‚¹ã¼ã‹ã—
 static Bloom g_Bloom;         // Bloom
 
-// ƒ|ƒXƒgƒGƒtƒFƒNƒgØ‚è‘Ö‚¦
+// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆåˆ‡ã‚Šæ›¿ãˆ
 enum class PostEffectMode { Horror = 0, Mosaic = 1, Posterize = 2, Gaussian = 3, Bloom = 4, None = 5 };
 static PostEffectMode g_PostMode = PostEffectMode::Horror;
 
-//ƒ‚ƒfƒ‹Œn‚ÌŒÄ‚Ño‚µ@ƒVƒF[ƒ_[•Ê
+//ãƒ¢ãƒ‡ãƒ«ç³»ã®å‘¼ã³å‡ºã—ã€€ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆ¥
 PixelLightingModel pixelLightingModel;
 PixelLightBlinnPhongModel pixelLightBlinnPhongModel;
 VertexDirectionalLightingModel vertexDirectionalLightingModel;
@@ -62,22 +63,23 @@ SpotLightingModel spotLightingModel;
 LimLightingModel limLightingModel;
 CookTorranceModel cookTorranceModel;
 DisneyPBRModel disneyPBRModel;
-Toon1Model toon1Model;  // ToonƒVƒF[ƒ_[’Ç‰Á
-Toon2Model toon2Model;  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒToonƒVƒF[ƒ_[’Ç‰Á
+Toon1Model toon1Model;  // Toonã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¿½åŠ 
+Toon2Model toon2Model;  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£Toonã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¿½åŠ 
+FurShaderModel furShaderModel;  // ãƒ•ã‚¡ãƒ¼ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¿½åŠ 
 
 BumpMapField bumpMapField;
-WaterField waterField;  // …–ÊƒtƒB[ƒ‹ƒh
-SkyDome skyDome;  // ƒXƒJƒCƒh[ƒ€’Ç‰Á
+WaterField waterField;  // æ°´é¢ãƒ•ã‚£ãƒ¼ãƒ«ãƒ‰
+SkyDome skyDome;  // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ è¿½åŠ 
 
-//ƒ|[ƒYƒtƒ‰ƒO
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°
 static	bool	pause = false;
 
-// ƒVƒF[ƒ_[Ø‚è‘Ö‚¦—p•Ï”
+// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆ‡ã‚Šæ›¿ãˆç”¨å¤‰æ•°
 static int currentShaderIndex = 0;
-static int maxShaderCount = 12;  // —˜—p‰Â”\‚ÈƒVƒF[ƒ_[”itoon2’Ç‰Á‚Å12ŒÂ‚Éj
-static bool spaceKeyPressed = false;  // ƒXƒy[ƒXƒL[‚Ì‘O‰ñó‘Ô
+static int maxShaderCount = 13;  // åˆ©ç”¨å¯èƒ½ãªã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æ•°ï¼ˆfurShaderè¿½åŠ ã§13å€‹ã«ï¼‰
+static bool spaceKeyPressed = false;  // ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ã®å‰å›çŠ¶æ…‹
 
-// ƒVƒF[ƒ_[–¼ˆê——
+// ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åä¸€è¦§
 static const char* shaderNames[] = {
     "Pixel Lighting",
     "Pixel Light Blinn-Phong",
@@ -90,24 +92,25 @@ static const char* shaderNames[] = {
     "Cook-Torrance",
     "Disney PBR",
     "Toon1",
-    "Toon2 (Ramp Texture)"
+    "Toon2 (Ramp Texture)",
+    "Fur Shader"
 };
 
 //===============================================
-//ƒ|[ƒYƒtƒ‰ƒOƒZƒbƒg
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°ã‚»ãƒƒãƒˆ
 void	SetPause(bool flg)
 {
 	pause = flg;
 }
 //===============================================
-//ƒ|[ƒYƒtƒ‰ƒOæ“¾
+//ãƒãƒ¼ã‚ºãƒ•ãƒ©ã‚°å–å¾—
 bool	GetPause()
 {
 	return pause;
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“‰Šú‰»
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³åˆæœŸåŒ–
 void InitGame()
 {
 	TextureInitialize(GetDevice());
@@ -116,14 +119,14 @@ void InitGame()
 
 	test2D.InitPolygon2D();
 
-	//3DƒIƒuƒWƒFƒNƒg‰Šú‰»
+	//3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
 	test3D.InitPolygon3D();
 	bumpMapField.InitBumpMapField();
 	waterField.InitWaterField();
-	// ƒoƒ“ƒvƒ}ƒbƒv‚Ì—×i+X•ûŒüj‚É”z’uBSIZE=5‚È‚Ì‚Å’†S‚ğ+5ˆÚ“®‚Å–Ê‚ª‚¿‚å‚¤‚ÇÚ‚·‚é
+	// ãƒãƒ³ãƒ—ãƒãƒƒãƒ—ã®éš£ï¼ˆ+Xæ–¹å‘ï¼‰ã«é…ç½®ã€‚SIZE=5ãªã®ã§ä¸­å¿ƒã‚’+5ç§»å‹•ã§é¢ãŒã¡ã‚‡ã†ã©æ¥ã™ã‚‹
 	waterField.SetPosition(XMFLOAT3(5.0f, 0.0f, 0.0f));
-	skyDome.InitSkyDome();  // ƒXƒJƒCƒh[ƒ€‰Šú‰»
-	//ƒ‚ƒfƒ‹Œn‚Ì‰Šú‰»
+	skyDome.InitSkyDome();  // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ åˆæœŸåŒ–
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®åˆæœŸåŒ–
 	pixelLightingModel.InitPolygonModel();
 	pixelLightBlinnPhongModel.InitPolygonModel();
 	vertexDirectionalLightingModel.InitPolygonModel();
@@ -135,17 +138,18 @@ void InitGame()
 	cookTorranceModel.InitPolygonModel();
 	disneyPBRModel.InitPolygonModel();
 	toon1Model.InitPolygonModel();
-	toon2Model.InitPolygonModel();  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒƒgƒD[ƒ“‰Šú‰»
+	toon2Model.InitPolygonModel();  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒˆã‚¥ãƒ¼ãƒ³åˆæœŸåŒ–
+	furShaderModel.InitPolygonModel();  // ãƒ•ã‚¡ãƒ¼ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åˆæœŸåŒ–
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒg‰Šú‰»
-	g_Mosaic.Initialize(); // Šù‘¶iQlj
-	g_Horror.Init();       // Šù‘¶ƒzƒ‰[
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆåˆæœŸåŒ–
+	g_Mosaic.Initialize(); // æ—¢å­˜ï¼ˆå‚è€ƒï¼‰
+	g_Horror.Init();       // æ—¢å­˜ãƒ›ãƒ©ãƒ¼
 	g_Horror.SetGrayScaleEnabled(true);
 	g_Horror.SetContrastPower(5.0f);
 	g_Horror.SetNoiseScale(120.0f);
 	g_Horror.SetNoiseAddPerFrame(XMFLOAT2(0.01f, 0.013f));
 
-	g_Posterize.Init();    // V‹Kƒ|ƒXƒ^ƒ‰ƒCƒY
+	g_Posterize.Init();    // æ–°è¦ãƒã‚¹ã‚¿ãƒ©ã‚¤ã‚º
 	g_Posterize.SetLevels(4);
 	g_Posterize.SetContrastPower(1.0f);
 	g_Posterize.SetGrayScaleEnabled(false);
@@ -163,18 +167,18 @@ void InitGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“I—¹
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³çµ‚äº†
 void FinalizeGame()
 {
 	CameraObject->Uninit();
 	test2D.FinalizePolygon2D();
 	
-	//ƒ‚ƒfƒ‹Œn‚ÌI—¹
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®çµ‚äº†
 	test3D.FinalizePolygon3D();
 	bumpMapField.FinalizeBumpMapField();
 	waterField.FinalizeWaterField();
-	skyDome.FinalizeSkyDome();  // ƒXƒJƒCƒh[ƒ€I—¹ˆ—
-	//ƒVƒF[ƒ_[‚ğ—˜—p‚µ‚½ƒ‚ƒfƒ‹‚ÌI—¹
+	skyDome.FinalizeSkyDome();  // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ çµ‚äº†å‡¦ç†
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®çµ‚äº†
 	pixelLightingModel.FinalizePolygonModel();
 	pixelLightBlinnPhongModel.FinalizePolygonModel();
 	vertexDirectionalLightingModel.FinalizePolygonModel();
@@ -186,9 +190,10 @@ void FinalizeGame()
 	cookTorranceModel.FinalizePolygonModel();
 	disneyPBRModel.FinalizePolygonModel();
 	toon1Model.FinalizePolygonModel();
-	toon2Model.FinalizePolygonModel();  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒƒgƒD[ƒ“I—¹
+	toon2Model.FinalizePolygonModel();  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒˆã‚¥ãƒ¼ãƒ³çµ‚äº†
+	furShaderModel.FinalizePolygonModel();  // ãƒ•ã‚¡ãƒ¼ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼çµ‚äº†
 
-	// ƒ|ƒXƒgƒGƒtƒFƒNƒgI—¹
+	// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆçµ‚äº†
 	g_Mosaic.Finalize();
 	g_Horror.Finalize();
 	g_Posterize.Finalize();
@@ -199,21 +204,21 @@ void FinalizeGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“XV
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æ›´æ–°
 void UpdateGame()
 {
-	if (GetPause() == false)//ƒ|[ƒY’†‚Å‚È‚¯‚ê‚ÎXVÀs
+	if (GetPause() == false)//ãƒãƒ¼ã‚ºä¸­ã§ãªã‘ã‚Œã°æ›´æ–°å®Ÿè¡Œ
 	{
-		// ƒXƒy[ƒXƒL[“ü—Íˆ—iƒgƒŠƒK[j
+		// ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼å…¥åŠ›å‡¦ç†ï¼ˆãƒˆãƒªã‚¬ãƒ¼ï¼‰
 		bool currentSpaceKeyState = Keyboard_IsKeyDown(KK_SPACE);
 		if (currentSpaceKeyState && !spaceKeyPressed)
 		{
-			// ƒXƒy[ƒXƒL[‚ª‰Ÿ‚³‚ê‚½uŠÔ
+			// ã‚¹ãƒšãƒ¼ã‚¹ã‚­ãƒ¼ãŒæŠ¼ã•ã‚ŒãŸç¬é–“
 			currentShaderIndex = (currentShaderIndex + 1) % maxShaderCount;
 		}
 		spaceKeyPressed = currentSpaceKeyState;
 
-		// VƒL[‚Åƒ|ƒXƒgƒGƒtƒFƒNƒgØ‚è‘Ö‚¦iHorror -> Mosaic -> Posterize -> Gaussian -> Bloom -> None -> Horror ...j
+		// Vã‚­ãƒ¼ã§ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆåˆ‡ã‚Šæ›¿ãˆï¼ˆHorror -> Mosaic -> Posterize -> Gaussian -> Bloom -> None -> Horror ...ï¼‰
 		if (Keyboard_IsKeyDownTrigger(KK_V))
 		{
 			if      (g_PostMode == PostEffectMode::Horror)    g_PostMode = PostEffectMode::Mosaic;
@@ -227,12 +232,12 @@ void UpdateGame()
 		CameraObject->Update();
 		test2D.UpdatePolygon2D();
 		
-		//ƒ‚ƒfƒ‹Œn‚ÌXV
+		//ãƒ¢ãƒ‡ãƒ«ç³»ã®æ›´æ–°
 		test3D.UpdatePolygon3D();
 		bumpMapField.UpdateBumpMapField();
 		waterField.UpdateWaterField();
-		skyDome.UpdateSkyDome();  // ƒXƒJƒCƒh[ƒ€XV
-		//ƒVƒF[ƒ_[‚ğ—˜—p‚µ‚½ƒ‚ƒfƒ‹‚ÌXV
+		skyDome.UpdateSkyDome();  // ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ æ›´æ–°
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®æ›´æ–°
 		pixelLightingModel.UpdatePolygonModel();
 		pixelLightBlinnPhongModel.UpdatePolygonModel();
 		vertexDirectionalLightingModel.UpdatePolygonModel();
@@ -244,9 +249,9 @@ void UpdateGame()
 		cookTorranceModel.UpdatePolygonModel();
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
-		toon2Model.UpdatePolygonModel();  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒƒgƒD[ƒ“XV
+		toon2Model.UpdatePolygonModel();  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒˆã‚¥ãƒ¼ãƒ³æ›´æ–°
 
-		// ƒ|ƒXƒgƒGƒtƒFƒNƒgXV
+		// ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆæ›´æ–°
 		g_Mosaic.Update();
 		g_Horror.Update();
 		g_Posterize.Update();
@@ -256,10 +261,10 @@ void UpdateGame()
 }
 
 //===============================================
-//ƒQ[ƒ€ƒV[ƒ“•`‰æ
+//ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³æç”»
 void DrawGame()
 {
-	// 1pass: ƒIƒtƒXƒNƒŠ[ƒ“‚Öi‘I‘ğ‚³‚ê‚½ƒ|ƒXƒgƒGƒtƒFƒNƒgj
+	// 1pass: ã‚ªãƒ•ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã¸ï¼ˆé¸æŠã•ã‚ŒãŸãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆï¼‰
 	switch (g_PostMode)
 	{
 	case PostEffectMode::Horror:
@@ -278,26 +283,26 @@ void DrawGame()
 		g_Bloom.BeginScene();
 		break;
 	case PostEffectMode::None:
-		// ‰½‚à‚µ‚È‚¢iƒoƒbƒNƒoƒbƒtƒ@‚É’¼Ú•`‰æj
+		// ä½•ã‚‚ã—ãªã„ï¼ˆãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã«ç›´æ¥æç”»ï¼‰
 		BindBackBuffer();
 		break;
 	}
 
-	//3D—pƒ}ƒgƒŠƒNƒXİ’è
-	SetDepthEnable(true);//‰œs‚«ˆ——LŒø
+	//3Dç”¨ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
+	SetDepthEnable(true);//å¥¥è¡Œãå‡¦ç†æœ‰åŠ¹
 	CameraObject->Draw();
 
 	ResetWorldViewProjection3D();
 	
-	// ƒXƒJƒCƒh[ƒ€‚ğÅ‰‚É•`‰æi”wŒi‚Æ‚µ‚ÄA[“x‘‚«‚İ–³Œøj
+	// ã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ ã‚’æœ€åˆã«æç”»ï¼ˆèƒŒæ™¯ã¨ã—ã¦ã€æ·±åº¦æ›¸ãè¾¼ã¿ç„¡åŠ¹ï¼‰
 	skyDome.DrawSkyDome();
 
-	//ƒ‚ƒfƒ‹Œn‚Ì•`‰æi[“xƒeƒXƒg—LŒø‚Å’Êí•`‰æj
+	//ãƒ¢ãƒ‡ãƒ«ç³»ã®æç”»ï¼ˆæ·±åº¦ãƒ†ã‚¹ãƒˆæœ‰åŠ¹ã§é€šå¸¸æç”»ï¼‰
 	//test3D.DrawPolygon3D();
 	bumpMapField.DrawBumpMapField();
 	waterField.DrawWaterField();
 
-	//ƒVƒF[ƒ_[‚ğ—˜—p‚µ‚½ƒ‚ƒfƒ‹‚Ì•`‰æiŒ»İ‘I‘ğ‚³‚ê‚½‚à‚Ì‚Ì‚İj
+	//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã‚’åˆ©ç”¨ã—ãŸãƒ¢ãƒ‡ãƒ«ã®æç”»ï¼ˆç¾åœ¨é¸æŠã•ã‚ŒãŸã‚‚ã®ã®ã¿ï¼‰
 	switch (currentShaderIndex)
 	{
 	case 0:
@@ -334,45 +339,48 @@ void DrawGame()
 		toon1Model.DrawPolygonModel();
 		break;
 	case 11:
-		toon2Model.DrawPolygonModel();  // ƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒƒgƒD[ƒ“•`‰æ
+		toon2Model.DrawPolygonModel();  // ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒˆã‚¥ãƒ¼ãƒ³æç”»
+		break;
+	case 12:
+		furShaderModel.DrawPolygonModel();  // ãƒ•ã‚¡ãƒ¼ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼æç”»
 		break;
 	}
 
-	// 2D—pƒ}ƒgƒŠƒNƒXİ’è
+	// 2Dç”¨ãƒãƒˆãƒªã‚¯ã‚¹è¨­å®š
 	SetWorldViewProjection2D();
-	SetDepthEnable(false);//‰œs‚«ˆ—–³Œø
-	// ƒ‚ƒUƒCƒN‘I‘ğ’†‚Ì‚İ’†‰›ƒ}[ƒJ[icenter_white.pngj‚ğ•`‰æiƒfƒ‚—pj
+	SetDepthEnable(false);//å¥¥è¡Œãå‡¦ç†ç„¡åŠ¹
+	// ãƒ¢ã‚¶ã‚¤ã‚¯é¸æŠä¸­ã®ã¿ä¸­å¤®ãƒãƒ¼ã‚«ãƒ¼ï¼ˆcenter_white.pngï¼‰ã‚’æç”»ï¼ˆãƒ‡ãƒ¢ç”¨ï¼‰
 	if (g_PostMode == PostEffectMode::Mosaic)
 	{
 		test2D.DrawPolygon2D();
 	}
 	
-	// Toon2‚Ìƒ‰ƒ“ƒvƒeƒNƒXƒ`ƒƒ‚ğ2DƒXƒvƒ‰ƒCƒg‚Æ‚µ‚Ä•\¦iÅI”Åj
-	if (currentShaderIndex == 11) // Toon2‚ª‘I‘ğ‚³‚ê‚Ä‚¢‚éê‡
+	// Toon2ã®ãƒ©ãƒ³ãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’2Dã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã¨ã—ã¦è¡¨ç¤ºï¼ˆæœ€çµ‚ç‰ˆï¼‰
+	if (currentShaderIndex == 11) // Toon2ãŒé¸æŠã•ã‚Œã¦ã„ã‚‹å ´åˆ
 	{
 		int rampTexID = toon2Model.GetRampTextureID();
 		
-		// ƒfƒoƒbƒOo—Í
+		// ãƒ‡ãƒãƒƒã‚°å‡ºåŠ›
 		char debugMsg[256];
 		sprintf_s(debugMsg, "Game.cpp: currentShaderIndex=%d, rampTexID=%d\n", currentShaderIndex, rampTexID);
 		OutputDebugStringA(debugMsg);
 		
-		if (rampTexID >= 0) // —LŒø‚ÈƒeƒNƒXƒ`ƒƒID‚Ìê‡
+		if (rampTexID >= 0) // æœ‰åŠ¹ãªãƒ†ã‚¯ã‚¹ãƒãƒ£IDã®å ´åˆ
 		{
-			// test2D‚Ì’¼Œã‚È‚Ì‚ÅAŠù‚É2D—p‚ÌƒVƒF[ƒ_[İ’è‚ªÏ‚ñ‚Å‚¢‚é
-			// ƒeƒNƒXƒ`ƒƒ‚¾‚¯‚ğ•ÏX‚µ‚ÄƒXƒvƒ‰ƒCƒg‚ğ•`‰æ
+			// test2Dã®ç›´å¾Œãªã®ã§ã€æ—¢ã«2Dç”¨ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼è¨­å®šãŒæ¸ˆã‚“ã§ã„ã‚‹
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã ã‘ã‚’å¤‰æ›´ã—ã¦ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’æç”»
 			ID3D11ShaderResourceView* tex = GetTexture(rampTexID);
 			if (tex != NULL) {
 				GetDeviceContext()->PSSetShaderResources(0, 1, &tex);
 				
-				// ƒ[ƒ‹ƒhs—ñ‚ğ¶ãˆÊ’u‚Éİ’è
+				// ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å·¦ä¸Šä½ç½®ã«è¨­å®š
 				XMMATRIX TranslationMatrix = XMMatrixTranslation(SCREEN_WIDTH - 64, 64.0f, 0.0f);
 				XMMATRIX RotationMatrix = XMMatrixRotationZ(0.0f);
 				XMMATRIX ScalingMatrix = XMMatrixScaling(1.0f, 1.0f, 1.0f);
 				XMMATRIX WorldMatrix = ScalingMatrix * RotationMatrix * TranslationMatrix;
 				SetWorldMatrix(WorldMatrix);
 				
-				// ƒXƒvƒ‰ƒCƒg•`‰æ
+				// ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 				XMFLOAT2 spriteSize = XMFLOAT2(128.0f, 128.0f);
 				XMFLOAT4 spriteColor = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
 				DrawSprite(spriteSize, spriteColor);
@@ -390,7 +398,7 @@ void DrawGame()
 		}
 	}
 
-	// 2pass: ‘I‘ğ‚µ‚½ƒ|ƒXƒgƒGƒtƒFƒNƒg ¨ ƒoƒbƒNƒoƒbƒtƒ@‚Ö
+	// 2pass: é¸æŠã—ãŸãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆ â†’ ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã¸
 	switch (g_PostMode)
 	{
 	case PostEffectMode::Horror:
@@ -409,20 +417,20 @@ void DrawGame()
 		g_Bloom.EndSceneAndDraw();
 		break;
 	case PostEffectMode::None:
-		// ‰½‚à‚µ‚È‚¢
+		// ä½•ã‚‚ã—ãªã„
 		break;
 	}
 	
-	// ƒJƒƒ‰‚ÌƒfƒoƒbƒOî•ñ‚ğ•\¦iã•”j
+	// ã‚«ãƒ¡ãƒ©ã®ãƒ‡ãƒãƒƒã‚°æƒ…å ±ã‚’è¡¨ç¤ºï¼ˆä¸Šéƒ¨ï¼‰
 	CameraObject->DebugDraw();
 
-	// Œ»İ‚ÌƒVƒF[ƒ_[–¼‚ğ•\¦i‰º•”j
+	// ç¾åœ¨ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼åã‚’è¡¨ç¤ºï¼ˆä¸‹éƒ¨ï¼‰
 	char shaderInfo[256];
 	sprintf_s(shaderInfo, "Current Shader: %s\nPress SPACE to switch ShaderModel", shaderNames[currentShaderIndex]);
 	sprintf_s(shaderInfo, "ShaderModdel (SPACE to switch): %s", shaderNames[currentShaderIndex]);
 	DrawTextDebugAtPosition(shaderInfo, 10, 150, 600, 100);
 
-	// Œ»İ‚Ìƒ|ƒXƒgƒGƒtƒFƒNƒgî•ñ‚ğ•\¦i‰º•”j
+	// ç¾åœ¨ã®ãƒã‚¹ãƒˆã‚¨ãƒ•ã‚§ã‚¯ãƒˆæƒ…å ±ã‚’è¡¨ç¤ºï¼ˆä¸‹éƒ¨ï¼‰
 	const char* peName =
 		(g_PostMode == PostEffectMode::Horror)    ? "Horror"   :
 		(g_PostMode == PostEffectMode::Mosaic)    ? "Mosaic"   :
