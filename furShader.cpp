@@ -104,7 +104,9 @@ void FurShaderModel::FinalizePolygonModel()
 //=============================================================================
 void FurShaderModel::UpdatePolygonModel()
 {
-    // 必要に応じてパラメータのリアルタイム調整をここに追加
+    // 適当に回転
+    Rotate.y += 0.3f;
+    Rotate.x += 0.1f;
 }
 
 

@@ -250,6 +250,7 @@ void UpdateGame()
 		disneyPBRModel.UpdatePolygonModel();
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
+		furShaderModel.UpdatePolygonModel();  // ファーシェーダー更新
 
 		// ポストエフェクト更新
 		g_Mosaic.Update();
