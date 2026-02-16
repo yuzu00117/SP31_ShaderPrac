@@ -31,6 +31,7 @@
 #include"toon1.h"
 #include"toon2.h"  // ランプテクスチャトゥーン追加
 #include"furShader.h"  // ファーシェーダー追加
+#include"gpuParticle.h"  // GPUパーティクル追加
 
 #include"bumpMapField.h"
 #include"waterField.h" // 水面フィールド
@@ -70,6 +71,7 @@ FurShaderModel furShaderModel;  // ファーシェーダー追加
 BumpMapField bumpMapField;
 WaterField waterField;  // 水面フィールド
 SkyDome skyDome;  // スカイドーム追加
+GPUParticle gpuParticle;  // GPUパーティクル追加
 
 //ポーズフラグ
 static	bool	pause = false;
@@ -140,6 +142,7 @@ void InitGame()
 	toon1Model.InitPolygonModel();
 	toon2Model.InitPolygonModel();  // ランプテクスチャトゥーン初期化
 	furShaderModel.InitPolygonModel();  // ファーシェーダー初期化
+	gpuParticle.Init();  // GPUパーティクル初期化
 
 	// ポストエフェクト初期化
 	g_Mosaic.Initialize(); // 既存（参考）
@@ -192,6 +195,7 @@ void FinalizeGame()
 	toon1Model.FinalizePolygonModel();
 	toon2Model.FinalizePolygonModel();  // ランプテクスチャトゥーン終了
 	furShaderModel.FinalizePolygonModel();  // ファーシェーダー終了
+	gpuParticle.Finalize();  // GPUパーティクル終了
 
 	// ポストエフェクト終了
 	g_Mosaic.Finalize();
@@ -251,6 +255,7 @@ void UpdateGame()
 		toon1Model.UpdatePolygonModel();
 		toon2Model.UpdatePolygonModel();  // ランプテクスチャトゥーン更新
 		furShaderModel.UpdatePolygonModel();  // ファーシェーダー更新
+		gpuParticle.Update(1.0f / 60.0f);  // GPUパーティクル更新
 
 		// ポストエフェクト更新
 		g_Mosaic.Update();
@@ -346,6 +351,9 @@ void DrawGame()
 		furShaderModel.DrawPolygonModel();  // ファーシェーダー描画
 		break;
 	}
+
+	// GPUパーティクル描画（シェーダー切り替えとは独立して常時表示）
+	gpuParticle.Draw();
 
 	// 2D用マトリクス設定
 	SetWorldViewProjection2D();

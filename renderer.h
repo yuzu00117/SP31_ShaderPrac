@@ -1,6 +1,6 @@
-/*==============================================================================
+ï»¿/*==============================================================================
 
-   ƒŒƒ“ƒ_ƒŠƒ“ƒOŠÇ—[renderer.h]
+   ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ç®¡ç†[renderer.h]
 														 Author :
 														 Date   :
 --------------------------------------------------------------------------------
@@ -11,49 +11,49 @@
 #include "main.h"
 
 //*********************************************************
-// \‘¢‘Ì
+// æ§‹é€ ä½“
 //*********************************************************
 
-// ’¸“_\‘¢‘Ì
+// é ‚ç‚¹æ§‹é€ ä½“
 struct VERTEX_3D
 {
-	XMFLOAT3 Position;	//’¸“_À•W@XMFLOAT3 @float x,y,z
-	XMFLOAT3 Normal;	//–@üƒxƒNƒgƒ‹ 
-	XMFLOAT4 Diffuse;	//F  XMFLOAT4 = float x,y,z,w
-	XMFLOAT2 TexCoord;	//ƒeƒNƒXƒ`ƒƒÀ•W XMFLOAT2 = float x,y
+	XMFLOAT3 Position;	//é ‚ç‚¹åº§æ¨™ã€€XMFLOAT3 ï¼ã€€float x,y,z
+	XMFLOAT3 Normal;	//æ³•ç·šãƒ™ã‚¯ãƒˆãƒ« 
+	XMFLOAT4 Diffuse;	//è‰²  XMFLOAT4 = float x,y,z,w
+	XMFLOAT2 TexCoord;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£åº§æ¨™ XMFLOAT2 = float x,y
 };
 
-// ƒ}ƒeƒŠƒAƒ‹\‘¢‘Ì
+// ãƒãƒ†ãƒªã‚¢ãƒ«æ§‹é€ ä½“
 struct MATERIAL
 {
-	XMFLOAT4	Ambient;	//ƒAƒ“ƒrƒGƒ“ƒg
-	XMFLOAT4	Diffuse;	//ƒfƒtƒ…[ƒY
-	XMFLOAT4	Specular;	//ƒXƒyƒLƒ…ƒ‰
-	XMFLOAT4	Emission;	//ƒGƒ~ƒbƒVƒu
-	float		Shininess;	//ƒXƒyƒLƒ…ƒ‰ƒpƒ‰ƒ[ƒ^
-	float		Dummy[3];	//16byte‹«ŠE’²®—pƒpƒfƒBƒ“ƒO
+	XMFLOAT4	Ambient;	//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆ
+	XMFLOAT4	Diffuse;	//ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚º
+	XMFLOAT4	Specular;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©
+	XMFLOAT4	Emission;	//ã‚¨ãƒŸãƒƒã‚·ãƒ–
+	float		Shininess;	//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+	float		Dummy[3];	//16byteå¢ƒç•Œèª¿æ•´ç”¨ãƒ‘ãƒ‡ã‚£ãƒ³ã‚°
 };
 
 struct LIGHT
 {
 	BOOL		Enable;
-	BOOL		Dummy[3];//16byte‹«ŠE—p
+	BOOL		Dummy[3];//16byteå¢ƒç•Œç”¨
 	XMFLOAT4	Direction;
 	XMFLOAT4	Diffuse;
 	XMFLOAT4	Ambient;
 
-	XMFLOAT4	Position;//ƒ|ƒCƒ“ƒgƒ‰ƒCƒg‚ÌÀ•W
+	XMFLOAT4	Position;//ãƒã‚¤ãƒ³ãƒˆãƒ©ã‚¤ãƒˆã®åº§æ¨™
 	XMFLOAT4	PointLightParam;
 
 	XMFLOAT4 Angle;
 
-	XMFLOAT4 SkyColor;//‹ó‚ÌF
-	XMFLOAT4 GroundColor;//’n–Ê‚ÌF
-	XMFLOAT4 GroundNormal;//’n–Ê‚Ì–@ü
+	XMFLOAT4 SkyColor;//ç©ºã®è‰²
+	XMFLOAT4 GroundColor;//åœ°é¢ã®è‰²
+	XMFLOAT4 GroundNormal;//åœ°é¢ã®æ³•ç·š
 };
 
 //*****************************************************************************
-// ƒvƒƒgƒ^ƒCƒvéŒ¾
+// ãƒ—ãƒ­ãƒˆã‚¿ã‚¤ãƒ—å®£è¨€
 //*****************************************************************************
 HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow);
 void FinalizeRenderer(void);
@@ -84,11 +84,13 @@ void SetMaterial( MATERIAL Material );
 
 void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** VertexLayout, const char* FileName);
 void CreatePixelShader(ID3D11PixelShader** PixelShader, const char* FileName);
+void CreateGeometryShader(ID3D11GeometryShader** GeometryShader, const char* FileName);
+void CreateComputeShader(ID3D11ComputeShader** ComputeShader, const char* FileName);
 
 void SetLight(LIGHT Light);
 
 IDXGISwapChain* GetSwapChain(void);
 
-// V‹K: ƒoƒbƒNƒoƒbƒtƒ@‚ÖRTV/DSV‚ğƒoƒCƒ“ƒh
+// æ–°è¦: ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã¸RTV/DSVã‚’ãƒã‚¤ãƒ³ãƒ‰
 void BindBackBuffer();
 

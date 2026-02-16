@@ -1,6 +1,6 @@
-/*==============================================================================
+ï»¿/*==============================================================================
 
-   ƒŒƒ“ƒ_ƒŠƒ“ƒOŠÇ— [renderer.cpp]
+   ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ç®¡ç† [renderer.cpp]
 														 Author :
 														 Date   :
 --------------------------------------------------------------------------------
@@ -12,12 +12,12 @@
 
 
 //*********************************************************
-// \‘¢‘Ì
+// æ§‹é€ ä½“
 //*********************************************************
 
 
 //*****************************************************************************
-// ƒOƒ[ƒoƒ‹•Ï”:
+// ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°:
 //*****************************************************************************
 D3D_FEATURE_LEVEL       g_FeatureLevel = D3D_FEATURE_LEVEL_11_0;
 
@@ -78,7 +78,7 @@ void SetDepthEnable( bool Enable )
 
 void ResetWorldViewProjection3D(void)
 {
-    //s—ñ‚ð’PˆÊs—ñ‚É‚µ‚Ä‰Šú‰»
+    //è¡Œåˆ—ã‚’å˜ä½è¡Œåˆ—ã«ã—ã¦åˆæœŸåŒ–
     g_ProjectionMatrix = XMMatrixIdentity();
     g_ViewMatrix = XMMatrixIdentity();
     g_WorldMatrix = XMMatrixIdentity();
@@ -86,10 +86,10 @@ void ResetWorldViewProjection3D(void)
 
 void SetWorldViewProjection2D( void )
 {
-    //2D—p³ŽË‰es—ñ‚ðƒZƒbƒg
+    //2Dç”¨æ­£å°„å½±è¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ
     g_ProjectionMatrix = XMMatrixOrthographicOffCenterLH(0.0f, SCREEN_WIDTH, SCREEN_HEIGHT, 0.0f, 0.0f, 1.0f);
     SetProjectionMatrix(g_ProjectionMatrix);
-    //s—ñ‚ð’PˆÊs—ñ‚É‚µ‚Ä‰Šú‰»
+    //è¡Œåˆ—ã‚’å˜ä½è¡Œåˆ—ã«ã—ã¦åˆæœŸåŒ–
     g_ViewMatrix = XMMatrixIdentity();
     SetViewMatrix(g_ViewMatrix);
     g_WorldMatrix = XMMatrixIdentity();
@@ -114,6 +114,9 @@ void SetViewMatrix( XMMATRIX ViewMatrix )
     XMFLOAT4X4 matrix;
     XMStoreFloat4x4(&matrix, view);
     g_ImmediateContext->UpdateSubresource(g_ViewBuffer, 0, NULL, &matrix, 0, 0);
+
+    // GSã«ã‚‚Viewè¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ
+    g_ImmediateContext->GSSetConstantBuffers(1, 1, &g_ViewBuffer);
 }
 
 void SetProjectionMatrix( XMMATRIX ProjectionMatrix )
@@ -123,6 +126,9 @@ void SetProjectionMatrix( XMMATRIX ProjectionMatrix )
     XMFLOAT4X4 matrix;
     XMStoreFloat4x4(&matrix, projection);
     g_ImmediateContext->UpdateSubresource(g_ProjectionBuffer, 0, NULL, &matrix, 0, 0);
+
+    // GSã«ã‚‚Projectionè¡Œåˆ—ã‚’ã‚»ãƒƒãƒˆ
+    g_ImmediateContext->GSSetConstantBuffers(2, 1, &g_ProjectionBuffer);
 }
 
 
@@ -142,24 +148,24 @@ void SetCameraPosition(XMFLOAT3 CameraPosition)
 
 void SetParameter(XMFLOAT4 Parameter)
 {
-    // C³: ƒpƒ‰ƒ[ƒ^‚Í g_ParameterBuffer ‚ÖXV‚·‚é
+    // ä¿®æ­£: ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯ g_ParameterBuffer ã¸æ›´æ–°ã™ã‚‹
     GetDeviceContext()->UpdateSubresource(g_ParameterBuffer, 0, NULL, &Parameter, 0, 0);
 }
 
 
 //=============================================================================
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 //=============================================================================
 HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
     HRESULT hr = S_OK;
 
-    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT; // d—vI
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT; // é‡è¦ï¼
 #ifdef _DEBUG
     creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
-    // ƒfƒoƒCƒXAƒXƒƒbƒvƒ`ƒF[ƒ“AƒRƒ“ƒeƒLƒXƒg¶¬
+    // ãƒ‡ãƒã‚¤ã‚¹ã€ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã€ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆç”Ÿæˆ
     DXGI_SWAP_CHAIN_DESC sd;
     ZeroMemory( &sd, sizeof( sd ) );
     sd.BufferCount = 1;
@@ -190,7 +196,7 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     if( FAILED( hr ) )
         return hr;
 
-    // ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[¶¬AÝ’è
+    // ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ç”Ÿæˆã€è¨­å®š
     ID3D11Texture2D* pBackBuffer = NULL;
     g_SwapChain->GetBuffer( 0, __uuidof( ID3D11Texture2D ), ( LPVOID* )&pBackBuffer );
     g_D3DDevice->CreateRenderTargetView( pBackBuffer, NULL, &g_RenderTargetView );
@@ -198,7 +204,7 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 
-    //ƒfƒvƒXƒXƒeƒ“ƒVƒ‹—pƒeƒNƒXƒ`ƒƒ[ì¬
+    //ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ç”¨ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ¼ä½œæˆ
     ID3D11Texture2D* depthTexture = NULL;
     D3D11_TEXTURE2D_DESC td;
     ZeroMemory( &td, sizeof(td) );
@@ -206,7 +212,7 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     td.Height           = sd.BufferDesc.Height;
     td.MipLevels        = 1;
     td.ArraySize        = 1;
-    td.Format           = DXGI_FORMAT_D24_UNORM_S8_UINT;//[“x24Bit
+    td.Format           = DXGI_FORMAT_D24_UNORM_S8_UINT;//æ·±åº¦24Bit
     td.SampleDesc       = sd.SampleDesc;
     td.Usage            = D3D11_USAGE_DEFAULT;
     td.BindFlags        = D3D11_BIND_DEPTH_STENCIL;
@@ -214,18 +220,18 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     td.MiscFlags        = 0;
     g_D3DDevice->CreateTexture2D( &td, NULL, &depthTexture );
 
-    //ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[ì¬
+    //ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ä½œæˆ
     D3D11_DEPTH_STENCIL_VIEW_DESC dsvd;
     ZeroMemory( &dsvd, sizeof(dsvd) );
     dsvd.Format         = td.Format;
     dsvd.ViewDimension  = D3D11_DSV_DIMENSION_TEXTURE2D;
     dsvd.Flags          = 0;
     g_D3DDevice->CreateDepthStencilView( depthTexture, &dsvd, &g_DepthStencilView );
-    //DirectX‚ÖƒZƒbƒg
+    //DirectXã¸ã‚»ãƒƒãƒˆ
     g_ImmediateContext->OMSetRenderTargets( 1, &g_RenderTargetView, g_DepthStencilView );
 
 
-    // ƒrƒ…[ƒ|[ƒgÝ’è
+    // ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆè¨­å®š
     D3D11_VIEWPORT vp;
     vp.Width = (FLOAT)SCREEN_WIDTH;
     vp.Height = (FLOAT)SCREEN_HEIGHT;
@@ -237,13 +243,13 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 
-    // ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgÝ’è
+    // ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     D3D11_RASTERIZER_DESC rd; 
     ZeroMemory( &rd, sizeof( rd ) );
     rd.FillMode = D3D11_FILL_SOLID; 
-//	rd.CullMode = D3D11_CULL_NONE;	//ƒJƒŠƒ“ƒO‚µ‚È‚¢i— ‚à•\‚à•\Ž¦‚µ‚¿‚á‚¤j
-    rd.CullMode = D3D11_CULL_BACK;	//— –Ê‚ðƒJƒŠƒ“ƒO‚·‚éi— –Ê‚Í•\Ž¦‚µ‚È‚¢j
-//	rd.CullMode = D3D11_CULL_FRONT;	//•\–Ê‚ðƒJƒŠƒ“ƒO‚·‚éi•\–Ê‚Í•\Ž¦‚µ‚È‚¢j
+//	rd.CullMode = D3D11_CULL_NONE;	//ã‚«ãƒªãƒ³ã‚°ã—ãªã„ï¼ˆè£ã‚‚è¡¨ã‚‚è¡¨ç¤ºã—ã¡ã‚ƒã†ï¼‰
+    rd.CullMode = D3D11_CULL_BACK;	//è£é¢ã‚’ã‚«ãƒªãƒ³ã‚°ã™ã‚‹ï¼ˆè£é¢ã¯è¡¨ç¤ºã—ãªã„ï¼‰
+//	rd.CullMode = D3D11_CULL_FRONT;	//è¡¨é¢ã‚’ã‚«ãƒªãƒ³ã‚°ã™ã‚‹ï¼ˆè¡¨é¢ã¯è¡¨ç¤ºã—ãªã„ï¼‰
 
     rd.DepthClipEnable = TRUE; 
     rd.MultisampleEnable = FALSE; 
@@ -256,13 +262,13 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 
-    // ƒuƒŒƒ“ƒhƒXƒe[ƒgÝ’è
+    // ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     D3D11_BLEND_DESC blendDesc;
     ZeroMemory( &blendDesc, sizeof( blendDesc ) );
     blendDesc.AlphaToCoverageEnable = FALSE;
     blendDesc.IndependentBlendEnable = FALSE;
     blendDesc.RenderTarget[0].BlendEnable = TRUE;
-    //•’Ê‚Ìƒ¿ƒuƒŒƒ“ƒhÝ’è
+    //æ™®é€šã®Î±ãƒ–ãƒ¬ãƒ³ãƒ‰è¨­å®š
     blendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
     blendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
     blendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
@@ -276,29 +282,29 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     g_ImmediateContext->OMSetBlendState( blendState, blendFactor, 0xffffffff );
 
 
-    // [“xƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒgÝ’è
+    // æ·±åº¦ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
     ZeroMemory( &depthStencilDesc, sizeof( depthStencilDesc ) );
     depthStencilDesc.DepthEnable = TRUE;
     depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ALL;
     depthStencilDesc.DepthFunc = D3D11_COMPARISON_LESS;
     depthStencilDesc.StencilEnable = FALSE;
-    g_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &g_DepthStateEnable );//[“x—LŒøƒXƒe[ƒg
+    g_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &g_DepthStateEnable );//æ·±åº¦æœ‰åŠ¹ã‚¹ãƒ†ãƒ¼ãƒˆ
 
     //depthStencilDesc.DepthEnable = FALSE;
     depthStencilDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
-    g_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &g_DepthStateDisable );//[“x–³ŒøƒXƒe[ƒg
+    g_D3DDevice->CreateDepthStencilState( &depthStencilDesc, &g_DepthStateDisable );//æ·±åº¦ç„¡åŠ¹ã‚¹ãƒ†ãƒ¼ãƒˆ
 
-    //[“xƒeƒXƒg—LŒø‚É‚µ‚Ä‚¨‚­
+    //æ·±åº¦ãƒ†ã‚¹ãƒˆæœ‰åŠ¹ã«ã—ã¦ãŠã
     g_ImmediateContext->OMSetDepthStencilState( g_DepthStateEnable, NULL );
 
-    // ƒTƒ“ƒvƒ‰[ƒXƒe[ƒgÝ’è
+    // ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆè¨­å®š
     D3D11_SAMPLER_DESC samplerDesc;
     ZeroMemory( &samplerDesc, sizeof( samplerDesc ) );
-    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;//‚¿‚å‚Á‚Æ‚¢‚¢ƒtƒBƒ‹ƒ^[‚É‚·‚é
-    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;//‰¡‚ÌÀ•W”ÍˆÍŠO‚Í‰æ‘œŒJ‚è•Ô‚µ
-    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;//c‚ÌÀ•W”ÍˆÍŠO‚Í‰æ‘œŒJ‚è•Ô‚µ
-    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;//–¢Žg—p
+    samplerDesc.Filter = D3D11_FILTER_ANISOTROPIC;//ã¡ã‚‡ã£ã¨ã„ã„ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ã«ã™ã‚‹
+    samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;//æ¨ªã®åº§æ¨™ç¯„å›²å¤–ã¯ç”»åƒç¹°ã‚Šè¿”ã—
+    samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;//ç¸¦ã®åº§æ¨™ç¯„å›²å¤–ã¯ç”»åƒç¹°ã‚Šè¿”ã—
+    samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;//æœªä½¿ç”¨
     samplerDesc.MipLODBias = 0;
     samplerDesc.MaxAnisotropy = 16;
     samplerDesc.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
@@ -306,14 +312,14 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     samplerDesc.MaxLOD = D3D11_FLOAT32_MAX;
     ID3D11SamplerState* samplerState = NULL;
     g_D3DDevice->CreateSamplerState( &samplerDesc, &samplerState );
-    //ƒTƒ“ƒvƒ‰[‚ðƒVƒF[ƒ_[‚ÖƒZƒbƒg
+    //ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸ã‚»ãƒƒãƒˆ
     g_ImmediateContext->PSSetSamplers( 0, 1, &samplerState );
 
 
-    //’è”ƒoƒbƒtƒ@¶¬
+    //å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
 
     //================================================
-    // WorldViewProjections—ñ—p’è”ƒoƒbƒtƒ@¶¬
+    // WorldViewProjectionè¡Œåˆ—ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
     D3D11_BUFFER_DESC hBufferDesc;
     hBufferDesc.ByteWidth = sizeof(XMMATRIX);
     hBufferDesc.Usage = D3D11_USAGE_DEFAULT;
@@ -321,7 +327,7 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     hBufferDesc.CPUAccessFlags = 0;
     hBufferDesc.MiscFlags = 0;
     hBufferDesc.StructureByteStride = sizeof(float);
-    //s—ñƒIƒuƒWƒFƒNƒg‚ðƒVƒF[ƒ_[‚ÖÚ‘±@b0‚ð‚Â‚©‚¤
+    //è¡Œåˆ—ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸æŽ¥ç¶šã€€b0ã‚’ã¤ã‹ã†
     g_D3DDevice->CreateBuffer(&hBufferDesc, NULL, &g_WorldBuffer);
     g_ImmediateContext->VSSetConstantBuffers(0, 1, &g_WorldBuffer);
 
@@ -331,14 +337,14 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
     g_D3DDevice->CreateBuffer(&hBufferDesc, NULL, &g_ProjectionBuffer);
     g_ImmediateContext->VSSetConstantBuffers(2, 1, &g_ProjectionBuffer);
 
-    //ƒ}ƒeƒŠƒAƒ‹—p’è”ƒoƒbƒtƒ@¶¬
+    //ãƒžãƒ†ãƒªã‚¢ãƒ«ç”¨å®šæ•°ãƒãƒƒãƒ•ã‚¡ç”Ÿæˆ
     hBufferDesc.ByteWidth = sizeof(MATERIAL);
     hBufferDesc.Usage = D3D11_USAGE_DEFAULT;
     hBufferDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
     hBufferDesc.CPUAccessFlags = 0;
     hBufferDesc.MiscFlags = 0;
     hBufferDesc.StructureByteStride = sizeof(float);
-    //ƒ}ƒeƒŠƒAƒ‹ƒIƒuƒWƒFƒNƒg‚ðƒVƒF[ƒ_[‚ÖÚ‘±@b1‚ðŽg‚¤
+    //ãƒžãƒ†ãƒªã‚¢ãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ã¸æŽ¥ç¶šã€€b1ã‚’ä½¿ã†
     g_D3DDevice->CreateBuffer( &hBufferDesc, NULL, &g_MaterialBuffer );
     g_ImmediateContext->VSSetConstantBuffers( 3, 1, &g_MaterialBuffer );
 
@@ -367,11 +373,11 @@ HRESULT InitRenderer(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 
 //=============================================================================
-// I—¹ˆ—
+// çµ‚äº†å‡¦ç†
 //=============================================================================
 void FinalizeRenderer(void)
 {
-    // ƒIƒuƒWƒFƒNƒg‰ð•ú
+    // ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè§£æ”¾
     if(g_WorldViewProjection)   g_WorldViewProjection->Release();
     if( g_MaterialBuffer )      g_MaterialBuffer->Release();
     if( g_VertexLayout )        g_VertexLayout->Release();
@@ -387,21 +393,21 @@ void FinalizeRenderer(void)
 
 
 //=============================================================================
-// ƒoƒbƒNƒoƒbƒtƒ@ƒNƒŠƒA
+// ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢
 //=============================================================================
 void Clear(void)
 {
-    // ƒoƒbƒNƒoƒbƒtƒ@ƒNƒŠƒAFiƒXƒJƒCƒh[ƒ€•\Ž¦‚Ì‚½‚ßAƒ_[ƒNƒuƒ‹[‚É•ÏXj
-    float ClearColor[4] = { 0.1f, 0.1f, 0.2f, 1.0f }; // ƒ_[ƒNƒuƒ‹[
-    //ƒoƒbƒNƒoƒbƒtƒ@‚ðƒNƒŠƒA
+    // ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚¯ãƒªã‚¢è‰²ï¼ˆã‚¹ã‚«ã‚¤ãƒ‰ãƒ¼ãƒ è¡¨ç¤ºã®ãŸã‚ã€ãƒ€ãƒ¼ã‚¯ãƒ–ãƒ«ãƒ¼ã«å¤‰æ›´ï¼‰
+    float ClearColor[4] = { 0.1f, 0.1f, 0.2f, 1.0f }; // ãƒ€ãƒ¼ã‚¯ãƒ–ãƒ«ãƒ¼
+    //ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
     g_ImmediateContext->ClearRenderTargetView( g_RenderTargetView, ClearColor );
-    //ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒoƒbƒtƒ@‚ðƒNƒŠƒA
+    //ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢
     g_ImmediateContext->ClearDepthStencilView( g_DepthStencilView, D3D11_CLEAR_DEPTH, 1.0f, 0);
 }
 
 
 //=============================================================================
-// ƒvƒŒƒ[ƒ“ƒg
+// ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆ
 //=============================================================================
 void Present(void)
 {
@@ -409,7 +415,7 @@ void Present(void)
 }
 
 
-// ’¸“_ƒVƒF[ƒ_¶¬
+// é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
 void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** VertexLayout, const char* FileName)
 {
 
@@ -424,7 +430,7 @@ void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** V
 
     g_D3DDevice->CreateVertexShader(buffer, fsize, NULL, VertexShader);
 
-    // “ü—ÍƒŒƒCƒAƒEƒg¶¬
+    // å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç”Ÿæˆ
     D3D11_INPUT_ELEMENT_DESC layout[] =
     {
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
@@ -445,7 +451,7 @@ void CreateVertexShader(ID3D11VertexShader** VertexShader, ID3D11InputLayout** V
 
 
 
-// ƒsƒNƒZƒ‹ƒVƒF[ƒ_¶¬
+// ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
 void CreatePixelShader(ID3D11PixelShader** PixelShader, const char* FileName)
 {
     FILE* file;
@@ -462,6 +468,39 @@ void CreatePixelShader(ID3D11PixelShader** PixelShader, const char* FileName)
     delete[] buffer;
 }
 
+// ã‚¸ã‚ªãƒ¡ãƒˆãƒªã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
+void CreateGeometryShader(ID3D11GeometryShader** GeometryShader, const char* FileName)
+{
+    FILE* file;
+    long int fsize;
+
+    file = fopen(FileName, "rb");
+    fsize = _filelength(_fileno(file));
+    unsigned char* buffer = new unsigned char[fsize];
+    fread(buffer, fsize, 1, file);
+    fclose(file);
+
+    g_D3DDevice->CreateGeometryShader(buffer, fsize, NULL, GeometryShader);
+
+    delete[] buffer;
+}
+
+// ã‚³ãƒ³ãƒ”ãƒ¥ãƒ¼ãƒˆã‚·ã‚§ãƒ¼ãƒ€ç”Ÿæˆ
+void CreateComputeShader(ID3D11ComputeShader** ComputeShader, const char* FileName)
+{
+    FILE* file;
+    long int fsize;
+
+    file = fopen(FileName, "rb");
+    fsize = _filelength(_fileno(file));
+    unsigned char* buffer = new unsigned char[fsize];
+    fread(buffer, fsize, 1, file);
+    fclose(file);
+
+    g_D3DDevice->CreateComputeShader(buffer, fsize, NULL, ComputeShader);
+
+    delete[] buffer;
+}
 void SetLight(LIGHT Light)
 {
     g_ImmediateContext->UpdateSubresource(g_LightBuffer, 0, NULL, &Light, 0, 0);
@@ -471,7 +510,7 @@ IDXGISwapChain* GetSwapChain(void)
     return g_SwapChain;
 }
 
-// V‹K: ƒoƒbƒNƒoƒbƒtƒ@‚ÌRTV/DSV‚ðÄƒoƒCƒ“ƒh
+// æ–°è¦: ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã®RTV/DSVã‚’å†ãƒã‚¤ãƒ³ãƒ‰
 void BindBackBuffer()
 {
     GetDeviceContext()->OMSetRenderTargets(1, &g_RenderTargetView, g_DepthStencilView);
